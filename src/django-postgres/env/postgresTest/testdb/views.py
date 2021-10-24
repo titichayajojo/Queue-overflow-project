@@ -1,3 +1,5 @@
+from django.db import reset_queries
+from django.http import response
 from django.shortcuts import render
 from rest_framework import viewsets
 from .serializers import TeacherSerializer, QuestionSerializer
@@ -24,12 +26,10 @@ def getAllTeachers(request):
 def questions_list(request):
     if request.method == 'GET':
         questions = Question.objects.all()
-        
-        title = request.GET.get('title', None)
-        if title is not None:
-            questions = questions.filter(title__icontains=title)
+
         
         serializer_class = QuestionSerializer(questions, many=True)
+        
         return JsonResponse(serializer_class.data, safe=False)
     
     elif request.method == 'POST':
