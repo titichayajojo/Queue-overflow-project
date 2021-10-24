@@ -47,7 +47,7 @@ const StyledQuestionRow = styled.div`
 const WhoAndWhen = styled.div`
   display: inline-block;
   color: #aaa;
-  font-size: .8rem;
+  font-size: 0.8rem;
   float: right;
   padding: 10px 0;
 `;
@@ -56,27 +56,65 @@ const UserLink = styled.a`
   color: #3ca4ff;
 `;
 
-function QuestionRow() {
+function formatDate(createdAt) {
+  var today = new Date();
+  var createdDate = new Date(createdAt);
+  var String = "";
+
+  var Difference_In_Time = today.getTime() - createdDate.getTime();
+  var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+
+  String = `${parseInt(Difference_In_Days)} Day`;
+
+  //less than 1 day convert to hour
+  if (Difference_In_Days < 1) {
+    Difference_In_Days *= 24;
+    String = `${parseInt(Difference_In_Days)} Hour`;
+  }
+
+  //less than 1 hour convert to minute
+  if (Difference_In_Days < 1) {
+    Difference_In_Days *= 60;
+    String = `${parseInt(Difference_In_Days)} Minute`;
+  }
+
+  //less than 1 minute convert to seconds
+  if (Difference_In_Days < 1) {
+    Difference_In_Days *= 60;
+    String = `${parseInt(Difference_In_Days)} Second`;
+  }
+
+  if (String.split(" ")[0] !== "1") String += "s";
+
+  return String + ' ago';
+}
+
+function QuestionRow(props) {
+  const value = props.value;
+  const tags = value.tags;
+  const date = formatDate(value.createdAt);
   return (
     <StyledQuestionRow>
       <QuestionStat>
-        0<span>votes</span>
+        {value.votes}
+        <span>votes</span>
       </QuestionStat>
       <QuestionStat>
-        1<span>answers</span>
+        {value.answers}
+        <span>answers</span>
       </QuestionStat>
       <QuestionStat>
-        6<span>views</span>
+        {value.views}
+        <span>views</span>
       </QuestionStat>
       <QuestionTitleArea>
-        <QuestionLink>Getting string in quotes in javascripts</QuestionLink>
+        <QuestionLink>{value.title}</QuestionLink>
         <WhoAndWhen>
-            asked 2mins ago <UserLink>JoJo</UserLink>
+          {date} <UserLink>{value.writer}</UserLink>
         </WhoAndWhen>
-        <Tag>javascripts</Tag>
-        <Tag>parsing</Tag>
-        <Tag>quotes</Tag>
-        <Tag>literals</Tag>
+        {tags.map((tag, index) => {
+          return <Tag key={index}>{tag}</Tag>;
+        })}
       </QuestionTitleArea>
     </StyledQuestionRow>
   );

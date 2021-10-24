@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import QuestionRow from "./QuestionRow";
+import { useEffect, useState } from "react";
+
 const StyledHeader = styled.h1`
   font-size: 1.8rem;
 `;
@@ -18,20 +20,38 @@ const BlueButton = styled.button`
   padding: 12px 10px;
 `;
 
-
 function QuestionPage() {
+  let [data, setData] = useState(null);
+
+  useEffect(() => {
+    var headers = {};
+    fetch("http://127.0.0.1:8000/api/questions", {
+      method: "GET",
+      mode: "cors",
+      headers: headers,
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((jsonResponse) => {
+        console.log(jsonResponse);
+        setData(jsonResponse);
+      });
+  }, []);
+
   return (
     <main>
       <HeaderRow>
         <StyledHeader>Top Questions</StyledHeader>
         <BlueButton>Ask&nbsp;Question</BlueButton>
       </HeaderRow>
-      <QuestionRow />
-      <QuestionRow />
-      <QuestionRow />
-      <QuestionRow />
-      <QuestionRow />
-      <QuestionRow />
+      {data &&
+        data.map((element, index) => {
+          return <QuestionRow key={element.id} value={element} />
+        })
+      }
     </main>
   );
 }

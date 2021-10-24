@@ -21,5 +21,5 @@ from django.conf.urls import url, include
 
 urlpatterns = [
     url(r'teachers', views.getAllTeachers),
-    url(r'questions', views.questions_list)
+    url(r'api/questions', views.questions_list)
 ]
