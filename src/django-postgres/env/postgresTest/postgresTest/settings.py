@@ -11,9 +11,11 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import dotenv_values
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+config = dotenv_values(".env")
 
 
 # Quick-start development settings - unsuitable for production
@@ -31,7 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'testdb',
+    'queueOverflowDB',
     'rest_framework',
     "corsheaders",
     'django.contrib.admin',
@@ -94,11 +96,11 @@ WSGI_APPLICATION = 'postgresTest.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'QueueOverflow', 
-        'USER': 'postgres', 
-        'PASSWORD': 'Jojoeiei1234',
-        'HOST': '127.0.0.1', 
-        'PORT': '5432',
+        'NAME': config["DATABASE"], 
+        'USER': config["USER"], 
+        'PASSWORD': config["PASSWORD"],
+        'HOST': config["HOST"], 
+        'PORT': config["PORT"],
     }
 }
 
