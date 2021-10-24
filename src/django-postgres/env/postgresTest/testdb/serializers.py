@@ -10,4 +10,4 @@ class TeacherSerializer(serializers.HyperlinkedModelSerializer):
 class QuestionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Question
-        fields = ('id', 'title', 'body', 'votes', 'answer', 'views', 'createAt')
+        fields = ('id', 'title', 'body', 'votes', 'answer', 'views', 'createdAt')
