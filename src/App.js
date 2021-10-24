@@ -16,12 +16,11 @@ function App() {
 
   return (
     <div>
+      <Reset />
       <GlobalStyles />
       <Header />
       <div>{routes}</div>
-
-      {/* <Reset /> */}
-      {/* <QuestionPage /> */}
+      <QuestionPage />
     </div>
   );
 }
