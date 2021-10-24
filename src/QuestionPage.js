@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import QuestionRow from "./QuestionRow";
 import { useEffect, useState } from "react";
+import Header from "./Components/Header/Header";
 
 const StyledHeader = styled.h1`
   font-size: 1.8rem;
