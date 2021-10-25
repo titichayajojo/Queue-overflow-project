@@ -66,7 +66,7 @@ const AskedDate = styled.div`
   font-size: 0.8rem;
 `;
 
-const WriterName = styled.span`
+const WriterName = styled.a`
   padding-left: 10px;
   font-size: 0.8rem;
   color: hsl(206deg 100% 60%);
