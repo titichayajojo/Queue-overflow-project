@@ -39,7 +39,8 @@ function QuestionPage() {
       .then((jsonResponse) => {
         console.log(jsonResponse);
         setData(jsonResponse);
-      });
+      })
+      .catch((error) => console.error(error, error.stack));
   }, []);
 
   return (
@@ -50,9 +51,8 @@ function QuestionPage() {
       </HeaderRow>
       {data &&
         data.map((element, index) => {
-          return <QuestionRow key={element.id} value={element} />
-        })
-      }
+          return <QuestionRow key={element.id} value={element} />;
+        })}
     </main>
   );
 }
