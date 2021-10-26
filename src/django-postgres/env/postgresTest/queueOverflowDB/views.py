@@ -1,3 +1,4 @@
+import json
 from django.db import reset_queries
 from django.http import response
 from django.shortcuts import render
@@ -8,6 +9,16 @@ from rest_framework.decorators import api_view
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
 from rest_framework import status
+from rest_framework.renderers import JSONRenderer
+
+def to_dict(instance):
+    opts = instance._meta
+    data = {}
+    for f in chain(opts.concrete_fields, opts.private_fields):
+        data[f.name] = f.value_from_object(instance)
+    for f in opts.many_to_many:
+        data[f.name] = [i.id for i in f.value_from_object(instance)]
+    return data
 
 @api_view(['GET', 'POST', 'DELETE'])
 def getAllTeachers(request):
@@ -25,12 +36,16 @@ def getAllTeachers(request):
 @api_view(['GET', 'POST', 'DELETE'])
 def questions_list(request):
     if request.method == 'GET':
-        questions = Question.objects.all()
-
+        questions = list(Question.objects.all().order_by('createdAt'))
         
         serializer_class = QuestionSerializer(questions, many=True)
-        
-        return JsonResponse(serializer_class.data, safe=False)
+        dict = serializer_class.data
+
+        for element in dict:
+            d = json.loads(json.dumps(element))
+            d["nDaysAgo"] ="nDaysAgo"
+            
+        return JsonResponse(d, safe=False)
     
     elif request.method == 'POST':
         question_data = JSONParser().parse(request)
