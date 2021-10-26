@@ -2,7 +2,8 @@ import styled from "styled-components";
 import QuestionRow from "./QuestionRow";
 import { useEffect, useState } from "react";
 import Header from "./Components/Header/Header";
-
+import classes from "./QuestionPage.module.css";
+import Loader from "react-loader-spinner";
 const StyledHeader = styled.h1`
   font-size: 1.8rem;
 `;
@@ -23,7 +24,7 @@ const BlueButton = styled.button`
 
 function QuestionPage() {
   let [data, setData] = useState(null);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     var headers = {};
     fetch("http://127.0.0.1:8000/api/questions", {
@@ -39,6 +40,7 @@ function QuestionPage() {
       .then((jsonResponse) => {
         console.log(jsonResponse);
         setData(jsonResponse);
+        setLoading(false);
       })
       .catch((error) => console.error(error, error.stack));
   }, []);
@@ -49,6 +51,15 @@ function QuestionPage() {
         <StyledHeader>Top Questions</StyledHeader>
         <BlueButton>Ask&nbsp;Question</BlueButton>
       </HeaderRow>
+      <div className={classes.questionContainer}>
+        <Loader
+          type="ThreeDots"
+          color="white"
+          height={150}
+          width={150}
+          visible={loading}
+        />
+      </div>
       {data &&
         data.map((element, index) => {
           return <QuestionRow key={element.id} value={element} />;

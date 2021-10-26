@@ -7,7 +7,7 @@ import HomePage from "./Screens/HomePage";
 import Header from "../src/Components/Header/Header";
 import SignUp from "../src/Screens/SignUp";
 
-import ViewQuestionPage from "./Screens/ViewQuestionPage"
+import ViewQuestionPage from "./Screens/ViewQuestionPage";
 
 function App() {
   const routes = (
@@ -16,7 +16,11 @@ function App() {
       <Route exact path="/SignUp" component={SignUp} />
       <Route exact path="/" component={HomePage} />
       {/* <Route exact path="/ViewQuestionPage" component={ViewQuestionPage} /> */}
-      <Route exact path="/ViewQuestionPage/:item" component={ViewQuestionPage} />
+      <Route
+        exact
+        path="/ViewQuestionPage/:item"
+        component={ViewQuestionPage}
+      />
       <Redirect to="/" />
     </Switch>
   );
