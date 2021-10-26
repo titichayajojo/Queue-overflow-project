@@ -43,3 +43,44 @@
       transform: rotate(360deg);
     }
   }
+
+  .row{
+    display: flex;
+    flex-direction: row;
+  }
+
+  .menubar{
+    margin-top:50px;
+    height:100vh;
+    width:15%;
+    background-color:rgb(255,255,255);
+    position:fixed; 
+    
+  }
+
+  .mainPage{
+    width:100%;
+    height:100%;
+    margin-left: 15%;
+   
+   
+  }
+
+  .bar{
+    width:100%;
+    height:50px;
+    /* background-color:red; */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content:space-between;
+    
+  }
+
+  .stickyBar{
+    height:100%;
+    width:5px;
+    background-color:green;
+    margin-left:0px;
+
+  }

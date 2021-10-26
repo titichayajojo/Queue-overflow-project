@@ -1,13 +1,14 @@
 import styled from "styled-components";
 import QuestionRow from "./QuestionRow";
 import { useEffect, useState } from "react";
-import Header from "./Components/Header/Header";
+import TabBar from "../src/Components/Button/TabBar";
 import classes from "./QuestionPage.module.css";
 import Loader from "react-loader-spinner";
 import {Link} from 'react-router-dom';
 
 const StyledHeader = styled.h1`
   font-size: 1.8rem;
+  margin-top: 50px;
 `;
 
 const HeaderRow = styled.div`
@@ -22,8 +23,14 @@ const BlueButton = styled(Link)`
   border: 0;
   border-radius: 5px;
   padding: 12px 10px;
+<<<<<<< HEAD
   text-decoration: none;
+=======
+  margin-top: 50px;
+>>>>>>> e10a9f36c65a76eab66adfd0282f4adc65b79955
 `;
+
+const TabBars = [{ name: "Questions" }, { name: "Tags" }, { name: "Users" }];
 
 function QuestionPage() {
   let [data, setData] = useState(null);
@@ -49,6 +56,7 @@ function QuestionPage() {
   }, []);
 
   return (
+<<<<<<< HEAD
     <main>
       <HeaderRow>
         <StyledHeader>Top Questions</StyledHeader>
@@ -62,12 +70,36 @@ function QuestionPage() {
           width={150}
           visible={loading}
         />
+=======
+    <div>
+      <div className={classes.row}>
+        <div className={classes.menubar}>
+          {TabBars.map((item) => {
+            return <TabBar title={item.name} />;
+          })}
+        </div>
+        <div className={classes.mainPage}>
+          <HeaderRow>
+            <StyledHeader>Top Questions</StyledHeader>
+            <BlueButton>Ask&nbsp;Question</BlueButton>
+          </HeaderRow>
+          <div className={classes.questionContainer}>
+            <Loader
+              type="ThreeDots"
+              color="white"
+              height={150}
+              width={150}
+              visible={loading}
+            />
+          </div>
+          {data &&
+            data.map((element, index) => {
+              return <QuestionRow key={element.id} value={element} />;
+            })}
+        </div>
+>>>>>>> e10a9f36c65a76eab66adfd0282f4adc65b79955
       </div>
-      {data &&
-        data.map((element, index) => {
-          return <QuestionRow key={element.id} value={element} />;
-        })}
-    </main>
+    </div>
   );
 }
 
