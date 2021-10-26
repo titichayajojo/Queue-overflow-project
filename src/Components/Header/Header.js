@@ -9,13 +9,21 @@ function Header() {
   return (
     <StyledHeader>
       <LogoLink to="/LoginPage">
-        <FontAwesomeIcon icon={faGripLinesVertical} size="2x" />
+        <FontAwesomeIcon
+          icon={faGripLinesVertical}
+          size="2x"
+          style={{ marginRight: 10 }}
+        />
         <span>
           Queue<b>overflow</b>
         </span>
       </LogoLink>
       <form action="" className="search">
-        <SearchInput type="text" placeholder="Search..."></SearchInput>
+        <SearchInput
+          type="text"
+          placeholder="Search..."
+          style={{ backgroundColor: "white" }}
+        ></SearchInput>
       </form>
       <ProfileLink to="/LoginPage">Login</ProfileLink>
     </StyledHeader>
