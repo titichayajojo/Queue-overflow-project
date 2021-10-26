@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Header from "../Components/Header/Header";
 import { Link } from "react-router-dom";
 
 const Container = styled.div`
@@ -60,7 +59,6 @@ const QuestionBodyText = styled.textarea`
 function AskPage() {
   return (
     <div>
-      <Header />
       <Container>
         <StyledHeader>Ask a public question</StyledHeader>
         <StyledHeader2>Title</StyledHeader2>

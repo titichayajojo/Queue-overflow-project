@@ -8,7 +8,6 @@ import Header from "../src/Components/Header/Header";
 import SignUp from "../src/Screens/SignUp";
 
 import ViewQuestionPage from "./Screens/ViewQuestionPage";
-import ViewQuestionPage from "./Screens/ViewQuestionPage"
 import QuestionPage from "./QuestionPage";
 import AskPage from "./Screens/AskPage";
 
