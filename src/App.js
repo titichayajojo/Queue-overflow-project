@@ -5,12 +5,19 @@ import LoginPage from "./Screens/LoginPage";
 import HomePage from "./Screens/HomePage";
 import Header from "../src/Components/Header/Header";
 import SignUp from "../src/Screens/SignUp";
+import ViewQuestionPage from "./Screens/ViewQuestionPage";
 function App() {
   const routes = (
     <Switch>
       <Route exact path="/LoginPage" component={LoginPage} />
       <Route exact path="/SignUp" component={SignUp} />
       <Route exact path="/" component={HomePage} />
+      {/* <Route exact path="/ViewQuestionPage" component={ViewQuestionPage} /> */}
+      <Route
+        exact
+        path="/ViewQuestionPage/:item"
+        component={ViewQuestionPage}
+      />
       <Redirect to="/" />
     </Switch>
   );
