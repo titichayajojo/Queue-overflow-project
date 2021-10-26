@@ -3,18 +3,12 @@ import GlobalStyles from "./style/GlobalStyle";
 import { Route, Switch, Redirect } from "react-router-dom";
 import LoginPage from "./Screens/LoginPage";
 import HomePage from "./Screens/HomePage";
-<<<<<<< HEAD
+
 import Header from "../src/Components/Header/Header";
 import SignUp from "../src/Screens/SignUp";
+
 import ViewQuestionPage from "./Screens/ViewQuestionPage";
-=======
 
-import Header from "../src/Components/Header/Header";
-import SignUp from "../src/Screens/SignUp";
-
-import ViewQuestionPage from "./Screens/ViewQuestionPage"
-
->>>>>>> 77bafc716d3d8738f2deb33cb114fac7ae401d0f
 function App() {
   const routes = (
     <Switch>
