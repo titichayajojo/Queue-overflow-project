@@ -4,7 +4,6 @@ import QuestionPage from "../QuestionPage";
 function HomePage() {
   return (
     <div>
-      <Header />
       <QuestionPage />
     </div>
   );
