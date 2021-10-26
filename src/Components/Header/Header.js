@@ -8,7 +8,7 @@ import { NavLink, Link } from "react-router-dom";
 function Header() {
   return (
     <StyledHeader>
-      <LogoLink to="/LoginPage">
+      <LogoLink to="/HomePage">
         <FontAwesomeIcon
           icon={faGripLinesVertical}
           size="2x"
