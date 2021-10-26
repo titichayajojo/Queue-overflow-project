@@ -67,10 +67,9 @@ export const Border = styled.div`
 
 function ViewQuestionPage() {
   let params = useParams();
-  console.log(params.item)
+  console.log(params.item);
   return (
     <div>
-      <Header />
       <BodyDiv>
         <ViewQuestionHeader />
         <VoteRow />
