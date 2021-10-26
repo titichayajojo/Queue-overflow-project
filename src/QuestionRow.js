@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const QuestionStat = styled.div`
   text-align: center;
@@ -28,7 +29,7 @@ const Tag = styled.span`
   font-size: 0.9rem;
 `;
 
-const QuestionLink = styled.a`
+const QuestionLink = styled(Link)`
   text-decoration: none;
   color: #3ca4ff;
   font-size: 1.1rem;
@@ -92,6 +93,7 @@ function formatDate(createdAt) {
 function QuestionRow(props) {
   const value = props.value;
   const tags = value.tags;
+  const id = value.id;
   const date = formatDate(value.createdAt);
   return (
     <StyledQuestionRow>
@@ -108,7 +110,7 @@ function QuestionRow(props) {
         <span>views</span>
       </QuestionStat>
       <QuestionTitleArea>
-        <QuestionLink>{value.title}</QuestionLink>
+        <QuestionLink to={"/ViewQuestionPage/"+ id}>{value.title}</QuestionLink>
         <WhoAndWhen>
           {date} <UserLink>{value.writer}</UserLink>
         </WhoAndWhen>
