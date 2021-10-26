@@ -6,4 +6,7 @@ export const StyledHeader = styled.header`
   display: grid;
   grid-template-columns: 220px 1fr 200px;
   grid-column-gap: 20px;
+  position: fixed;
+  width: 100%;
+  z-index: 9999;
 `;
