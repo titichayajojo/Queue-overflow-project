@@ -1,123 +1,89 @@
 import styled from "styled-components";
 import Header from "../Components/Header/Header";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSortUp } from "@fortawesome/free-solid-svg-icons";
-import { faSortDown } from "@fortawesome/free-solid-svg-icons";
-import { faPaw } from "@fortawesome/free-solid-svg-icons";
+import VoteRow from "../Components/Row/VoteRow";
+import TagsRow from "../Components/Row/TagsRow";
+import ProfileRow from "../Components/Row/ProfileRow";
+import AnswersRow from "../Components/Row/AnswersRow";
+import { BlueButton } from "../Components/Header/ViewQuestionHeaderStyle";
 import ViewQuestionHeader from "../Components/Header/ViewQuestionHeader";
 
-const VotesRow = styled.div`
-  justify-content: center;
-  display: flex;
-  span {
-    padding-left: 30px;
-    padding-bottom: 10px;
-    line-height: 25px;
-    font-size: 0.9rem;
-    width: 700px;
-  }
-`;
-
-const ArrowsRow = styled.div`
-  width: 50px;
-  text-align: center;
-`;
-
-const Votes = styled.div`
-  font-size: 1rem;
-  color: hsl(210, 8%, 82.5%);
-`;
-
-const Tag = styled.span`
-  display: inline-block;
-  margin-right: 5px;
-  background-color: #3e4a52;
-  color: #9cc3db;
-  padding: 7px;
-  border-radius: 5px;
-  font-size: 0.9rem;
-`;
-
-const TagRow = styled.div`
-  padding: 10px;
-  text-align: center;
-  margin-right: 210px;
-`;
-
-const WriterRow = styled.div`
+const TotalAnswers = styled.div`
   display: grid;
   justify-content: center;
   align-items: center;
-  margin-left: 570px;
+  margin-right: 660px;
+  font-size: 1.2rem;
+  padding-bottom: 20px;
+  padding-top: 20px;
 `;
 
-const Writer = styled.div`
-  width: 190px;
-  height: 67px;
-  background-color: hsl(206, 46%, 30%);
-  padding-left: 10px;
-  padding-bottom: 5px;
+const YourAnswer = styled.div`
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  margin-right: 660px;
+  font-size: 1.2rem;
+  padding-bottom: 50px;
+  padding-top: 20px;
 `;
 
-const AskedDate = styled.div`
-  padding-bottom: 10px;
-  padding-top: 10px;
-  color: hsl(210deg 8% 70%);
-  font-size: 0.8rem;
+const AnswerInput = styled.input`
+  display: grid;
+  box-sizing: border-box;
+  width: 600px;
+  border-radius: 3px;
+  border: 1px solid #777;
+  padding: 100px;
+  margin-right: 180px;
 `;
 
-const WriterName = styled.a`
-  padding-left: 10px;
-  font-size: 0.8rem;
-  color: hsl(206deg 100% 60%);
+const AnswerInputRow = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const AnswerButtonRow = styled.div`
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  margin-right: 660px;
+`;
+
+export const BodyDiv = styled.div`
+  width: 100%;
+  height: 100%;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const Border = styled.div`
+  border-bottom: ridge hsl(210, 4.5%, 30.5%) 0.1px;
+  width: 50vw;
 `;
 
 function ViewQuestionPage() {
   return (
     <div>
       <Header />
-      <ViewQuestionHeader />
-      <VotesRow>
-        <ArrowsRow>
-          <FontAwesomeIcon icon={faSortUp} size="4x" color="grey" />
-          <Votes>1000</Votes>
-          <FontAwesomeIcon icon={faSortDown} size="4x" color="grey" />
-        </ArrowsRow>
-        <span>
-          I need to test catch when fetching data request rejects but I don't
-          understand why error is not catched and I recieved this error:
-          UnhandledPromiseRejectionWarning: Unhandled promise rejection. This
-          error originated either by throwing inside of an async function
-          without a catch block, or by rejecting a promise which was not handled
-          with .catch(). (rejection id: 2) If I test case when fetchSomething
-          resolves with Promise.resolve() evertyhing works fine and tests are
-          correct but when I try to Promise.reject() in order to test catch case
-          then this error is not catched and I have unhandled promise rejection.
-          (Why code looks like this: In other places in the app I handle
-          changing of status with redux, so testing of catch is easy, but in one
-          place I need to fetch 3 different assets for component and I decided
-          to handle change of status with useState because extracting 3
-          different statuses from redux and combining it will be ugly, with
-          useState is much cleaner i think) Thanks in advance for help! :)
-        </span>
-      </VotesRow>
-
-      <TagRow>
-        <Tag>java</Tag>
-        <Tag>react.js</Tag>
-        <Tag>jest.js</Tag>
-        <Tag>react-hooks</Tag>
-        <Tag>enzyme</Tag>
-        <Tag>use-effect</Tag>
-      </TagRow>
-
-      <WriterRow>
-        <Writer>
-          <AskedDate>asked May 27 '20 at 8:06</AskedDate>
-          <FontAwesomeIcon icon={faPaw} size="2x" />
-          <WriterName>Darek Gala</WriterName>
-        </Writer>
-      </WriterRow>
+      <BodyDiv>
+        <ViewQuestionHeader />
+        <VoteRow />
+        <TagsRow />
+        <ProfileRow />
+        <TotalAnswers>2 Answers</TotalAnswers>
+        <AnswersRow />
+        <AnswersRow />
+        <YourAnswer>Your Answer</YourAnswer>
+        <AnswerInputRow>
+          <AnswerInput></AnswerInput>
+        </AnswerInputRow>
+        <AnswerButtonRow>
+          <BlueButton>Post&nbsp;Your&nbsp;Answer</BlueButton>
+        </AnswerButtonRow>
+      </BodyDiv>
     </div>
   );
 }

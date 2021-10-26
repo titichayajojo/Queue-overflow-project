@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 export const ViewQuestionHeaderRow = styled.div`
-  display: grid;
-  grid-template-columns: 1fr min-content;
+  display: flex;
+  flex-direction: column;
   padding: 30px;
-  text-align: center;
+  width: 100%;
 `;
 
 export const StyledHeader = styled.div`
@@ -17,7 +17,8 @@ export const BlueButton = styled.button`
   color: #fff;
   border: 0;
   border-radius: 5px;
-  padding: 12px 10px;
+  align-self: end;
+  height: 40px;
 `;
 
 export const QuestionStats = styled.span`
@@ -31,7 +32,19 @@ export const QuestionStats = styled.span`
 `;
 
 export const StyledQuestionRow = styled.span`
+  align-self: start;
+  margin-bottom: 30px;
+  justify-content: center;
+`;
+
+export const Border = styled.div`
   border-bottom: ridge hsl(210, 4.5%, 30.5%) 0.1px;
-  margin-right: 130px;
-  padding-bottom: 20px;
+  width: 100%;
+`;
+
+export const Question = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;
