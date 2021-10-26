@@ -16,7 +16,7 @@ import Header from "../src/Components/Header/Header";
 import SignUp from "../src/Screens/SignUp";
 
 import ViewQuestionPage from "./Screens/ViewQuestionPage";
-import QuestionPage from "./QuestionPage";
+
 import AskPage from "./Screens/AskPage";
 
 function App() {
@@ -26,7 +26,7 @@ function App() {
       <Route path="/SignUp" component={SignUp} />
       <Route path="/Questions" component={QuestionPage} />
       <Route path="/Tags" component={TagsPage} />
-
+      <Route path="/AskPage" component={AskPage} />
       <Route path="/ViewQuestionPage/:item" component={ViewQuestionPage} />
       <Route path="/" component={HomePage} />
 

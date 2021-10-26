@@ -59,8 +59,10 @@ const QuestionBodyText = styled.textarea`
 function AskPage() {
   return (
     <div>
-      <Container>
-        <StyledHeader>Ask a public question</StyledHeader>
+      <Container style={{}}>
+        <StyledHeader style={{ marginTop: 50 }}>
+          Ask a public question
+        </StyledHeader>
         <StyledHeader2>Title</StyledHeader2>
         <TipLabel>
           Be specific and imagine you’re asking a question to another person
