@@ -9,7 +9,8 @@ function App() {
     <Switch>
       <Route exact path="/LoginPage" component={LoginPage} />
       <Route exact path="/" component={HomePage} />
-      <Route exact path="/ViewQuestionPage" component={ViewQuestionPage} />
+      {/* <Route exact path="/ViewQuestionPage" component={ViewQuestionPage} /> */}
+      <Route exact path="/ViewQuestionPage/:item" component={ViewQuestionPage} />
       <Redirect to="/" />
     </Switch>
   );

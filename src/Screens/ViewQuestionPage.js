@@ -6,6 +6,7 @@ import ProfileRow from "../Components/Row/ProfileRow";
 import AnswersRow from "../Components/Row/AnswersRow";
 import { BlueButton } from "../Components/Header/ViewQuestionHeaderStyle";
 import ViewQuestionHeader from "../Components/Header/ViewQuestionHeader";
+import { useParams } from "react-router-dom";
 
 const TotalAnswers = styled.div`
   display: grid;
@@ -65,6 +66,8 @@ export const Border = styled.div`
 `;
 
 function ViewQuestionPage() {
+  let params = useParams();
+  console.log(params.item)
   return (
     <div>
       <Header />
