@@ -35,7 +35,7 @@ def getAllTeachers(request):
         # 'safe=False' for objects serialization
 
 @api_view(['GET', 'POST', 'DELETE'])
-def questions_list(request):
+def questionsList(request):
     if request.method == 'GET':
         questions = list(Question.objects.all().order_by('createdAt'))
         
@@ -57,3 +57,15 @@ def questions_list(request):
             return JsonResponse(question_serializer.data, status=status.HTTP_201_CREATED) 
         return JsonResponse(question_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+@api_view(['GET', 'POST', 'DELETE'])
+def questionDetail(request, id):
+    if request.method == 'GET':
+        question = Question.objects.get(id=id)
+        question_serializer = QuestionSerializer(question) 
+        dict = question_serializer.data
+        res = []
+        element = json.loads(json.dumps(dict))
+        element["askedDate"] = calculateNDaysAgo(element.get('createdAt'))
+        res.append(element)
+        return JsonResponse(res, safe=False) 
+            
