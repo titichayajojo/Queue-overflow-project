@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import RichEditorEditor from '../Components/Input/RichTextEditor'
 import { Link } from "react-router-dom";
 
 const Container = styled.div`
@@ -75,7 +76,7 @@ function AskPage() {
         <TipLabel>
           Include all the information someone would need to answer your question
         </TipLabel>
-        <QuestionBodyText placeholder="Question"></QuestionBodyText>
+        <RichEditorEditor></RichEditorEditor> 
         <BlueButton>Upload image</BlueButton>
         <StyledHeader2>Tags</StyledHeader2>
         <TipLabel>
