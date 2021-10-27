@@ -57,62 +57,30 @@ const UserLink = styled.a`
   color: #3ca4ff;
 `;
 
-function formatDate(createdAt) {
-  var today = new Date();
-  var createdDate = new Date(createdAt);
-  var String = "";
-
-  var Difference_In_Time = today.getTime() - createdDate.getTime();
-  var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-
-  String = `${parseInt(Difference_In_Days)} Day`;
-
-  //less than 1 day convert to hour
-  if (Difference_In_Days < 1) {
-    Difference_In_Days *= 24;
-    String = `${parseInt(Difference_In_Days)} Hour`;
-  }
-
-  //less than 1 hour convert to minute
-  if (Difference_In_Days < 1) {
-    Difference_In_Days *= 60;
-    String = `${parseInt(Difference_In_Days)} Minute`;
-  }
-
-  //less than 1 minute convert to seconds
-  if (Difference_In_Days < 1) {
-    Difference_In_Days *= 60;
-    String = `${parseInt(Difference_In_Days)} Second`;
-  }
-
-  if (String.split(" ")[0] !== "1") String += "s";
-
-  return String + ' ago';
-}
-
 function QuestionRow(props) {
   const value = props.value;
-  const tags = value.tags;
-  const id = value.id;
-  const date = formatDate(value.createdAt);
+  const { tags, id, nDaysAgo, title, writer, votes, answers, views } = value;
+
   return (
     <StyledQuestionRow>
       <QuestionStat>
-        {value.votes}
+        {votes}
         <span>votes</span>
       </QuestionStat>
       <QuestionStat>
-        {value.answers}
+        {answers}
         <span>answers</span>
       </QuestionStat>
       <QuestionStat>
-        {value.views}
+        {views}
         <span>views</span>
       </QuestionStat>
       <QuestionTitleArea>
-        <QuestionLink to={"/ViewQuestionPage/"+ id}>{value.title}</QuestionLink>
+        <QuestionLink to={"/ViewQuestionPage/" + id}>
+          {title}
+        </QuestionLink>
         <WhoAndWhen>
-          {date} <UserLink>{value.writer}</UserLink>
+          {nDaysAgo} <UserLink>{writer}</UserLink>
         </WhoAndWhen>
         {tags.map((tag, index) => {
           return <Tag key={index}>{tag}</Tag>;

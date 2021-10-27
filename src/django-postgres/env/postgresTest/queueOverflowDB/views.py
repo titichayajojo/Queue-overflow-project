@@ -1,3 +1,4 @@
+import json
 from django.db import reset_queries
 from django.http import response
 from django.shortcuts import render
@@ -8,6 +9,17 @@ from rest_framework.decorators import api_view
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
 from rest_framework import status
+from rest_framework.renderers import JSONRenderer
+from .functions.index import calculateNDaysAgo
+
+def to_dict(instance):
+    opts = instance._meta
+    data = {}
+    for f in chain(opts.concrete_fields, opts.private_fields):
+        data[f.name] = f.value_from_object(instance)
+    for f in opts.many_to_many:
+        data[f.name] = [i.id for i in f.value_from_object(instance)]
+    return data
 
 @api_view(['GET', 'POST', 'DELETE'])
 def getAllTeachers(request):
@@ -23,14 +35,19 @@ def getAllTeachers(request):
         # 'safe=False' for objects serialization
 
 @api_view(['GET', 'POST', 'DELETE'])
-def questions_list(request):
+def questionsList(request):
     if request.method == 'GET':
-        questions = Question.objects.all()
-
+        questions = list(Question.objects.all().order_by('createdAt'))
         
         serializer_class = QuestionSerializer(questions, many=True)
-        
-        return JsonResponse(serializer_class.data, safe=False)
+        dict = serializer_class.data
+        res = []
+        for element in dict:
+            element = json.loads(json.dumps(element))
+            element["nDaysAgo"] = calculateNDaysAgo(element.get('createdAt'))
+            res.append(element)
+            
+        return JsonResponse(res, safe=False)
     
     elif request.method == 'POST':
         question_data = JSONParser().parse(request)
@@ -40,3 +57,15 @@ def questions_list(request):
             return JsonResponse(question_serializer.data, status=status.HTTP_201_CREATED) 
         return JsonResponse(question_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+@api_view(['GET', 'POST', 'DELETE'])
+def questionDetail(request, id):
+    if request.method == 'GET':
+        question = Question.objects.get(id=id)
+        question_serializer = QuestionSerializer(question) 
+        dict = question_serializer.data
+        res = []
+        element = json.loads(json.dumps(dict))
+        element["askedDate"] = calculateNDaysAgo(element.get('createdAt'))
+        res.append(element)
+        return JsonResponse(res, safe=False) 
+            
