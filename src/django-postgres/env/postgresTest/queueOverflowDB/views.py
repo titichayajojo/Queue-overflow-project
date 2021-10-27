@@ -10,6 +10,7 @@ from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
 from rest_framework import status
 from rest_framework.renderers import JSONRenderer
+from .functions.index import calculateNDaysAgo
 
 def to_dict(instance):
     opts = instance._meta
@@ -40,12 +41,13 @@ def questions_list(request):
         
         serializer_class = QuestionSerializer(questions, many=True)
         dict = serializer_class.data
-
+        res = []
         for element in dict:
-            d = json.loads(json.dumps(element))
-            d["nDaysAgo"] ="nDaysAgo"
+            element = json.loads(json.dumps(element))
+            element["nDaysAgo"] = calculateNDaysAgo(element.get('createdAt'))
+            res.append(element)
             
-        return JsonResponse(d, safe=False)
+        return JsonResponse(res, safe=False)
     
     elif request.method == 'POST':
         question_data = JSONParser().parse(request)
