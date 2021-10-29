@@ -20,7 +20,11 @@ from django.conf.urls import url, include
 
 
 urlpatterns = [
-    url(r'teachers', views.getAllTeachers),
+    #question
     url(r'api/questions', views.questionsList),
-    url(r'api/question/(?P<id>\d+)/$', views.questionDetail)
+    url(r'api/question/(?P<id>\d+)/$', views.questionDetail),
+
+    #tag
+    url(r'api/tags', views.tagList),
+    url(r'api/tag/(?P<title>[\w\-]+)/$', views.tagDetail),
 ]

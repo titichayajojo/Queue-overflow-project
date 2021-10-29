@@ -3,8 +3,9 @@ from django.db import reset_queries
 from django.http import response
 from django.shortcuts import render
 from rest_framework import viewsets
-from .serializers import TeacherSerializer, QuestionSerializer
-from .models import Teacher, Question
+from .serializers import QuestionSerializer, TagSerializer
+from .Model.Question import Question
+from .Model.Tag import Tag
 from rest_framework.decorators import api_view
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
@@ -12,30 +13,9 @@ from rest_framework import status
 from rest_framework.renderers import JSONRenderer
 from .functions.index import calculateNDaysAgo
 
-def to_dict(instance):
-    opts = instance._meta
-    data = {}
-    for f in chain(opts.concrete_fields, opts.private_fields):
-        data[f.name] = f.value_from_object(instance)
-    for f in opts.many_to_many:
-        data[f.name] = [i.id for i in f.value_from_object(instance)]
-    return data
-
-@api_view(['GET', 'POST', 'DELETE'])
-def getAllTeachers(request):
-    if request.method == 'GET':
-        teachers = Teacher.objects.all()
-        
-        title = request.GET.get('title', None)
-        if title is not None:
-            teachers = teachers.filter(title__icontains=title)
-        
-        serializer_class = TeacherSerializer(teachers, many=True)
-        return JsonResponse(serializer_class.data, safe=False)
-        # 'safe=False' for objects serialization
-
 @api_view(['GET', 'POST', 'DELETE'])
 def questionsList(request):
+    # get all questions
     if request.method == 'GET':
         questions = list(Question.objects.all().order_by('createdAt'))
         
@@ -48,24 +28,53 @@ def questionsList(request):
             res.append(element)
             
         return JsonResponse(res, safe=False)
-    
+
+    # post a question
     elif request.method == 'POST':
-        question_data = JSONParser().parse(request)
-        question_serializer = QuestionSerializer(data=question_data)
-        if question_serializer.is_valid():
-            question_serializer.save()
-            return JsonResponse(question_serializer.data, status=status.HTTP_201_CREATED) 
-        return JsonResponse(question_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        questionData = JSONParser().parse(request)
+        questionSerializer = QuestionSerializer(data=questionData)
+        if questionSerializer.is_valid():
+            questionSerializer.save()
+            return JsonResponse(questionSerializer.data, status=status.HTTP_201_CREATED) 
+        return JsonResponse(questionSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['GET', 'POST', 'DELETE'])
 def questionDetail(request, id):
+    # get question by id
     if request.method == 'GET':
         question = Question.objects.get(id=id)
-        question_serializer = QuestionSerializer(question) 
-        dict = question_serializer.data
+        questionSerializer = QuestionSerializer(question) 
+        dict = questionSerializer.data
         res = []
         element = json.loads(json.dumps(dict))
         element["askedDate"] = calculateNDaysAgo(element.get('createdAt'))
         res.append(element)
-        return JsonResponse(res, safe=False) 
+        return JsonResponse(res, safe=False)
+
+@api_view(['GET', 'POST', 'DELETE'])
+def tagList(request):
+    # get all tags
+    if request.method == 'GET':
+        tags = list(Tag.objects.all().order_by('createdAt'))
+        serializer_class = TagSerializer(tags, many=True)
+        return JsonResponse(serializer_class.data, safe=False)
+
+
+    # post a tag
+    elif request.method == 'POST':
+        tagData = JSONParser().parse(request)
+        tagSerializer = TagSerializer(data=tagData)
+        if tagSerializer.is_valid():
+            tagSerializer.save()
+            return JsonResponse(tagSerializer.data, status=status.HTTP_201_CREATED) 
+        return JsonResponse(tagSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET', 'POST', 'DELETE'])
+def tagDetail(request, title):
+    # get question by title
+    if request.method == 'GET':
+        tag = Tag.objects.get(title=title)
+        tagSerializer = TagSerializer(tag) 
+        return JsonResponse(tagSerializer.data, safe=False)
+
             
