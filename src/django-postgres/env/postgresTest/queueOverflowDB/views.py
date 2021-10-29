@@ -69,4 +69,12 @@ def tagList(request):
             return JsonResponse(tagSerializer.data, status=status.HTTP_201_CREATED) 
         return JsonResponse(tagSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET', 'POST', 'DELETE'])
+def tagDetail(request, title):
+    # get question by title
+    if request.method == 'GET':
+        tag = Tag.objects.get(title=title)
+        tagSerializer = TagSerializer(tag) 
+        return JsonResponse(tagSerializer.data, safe=False)
+
             
