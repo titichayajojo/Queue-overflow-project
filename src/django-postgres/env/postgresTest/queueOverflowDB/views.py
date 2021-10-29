@@ -1,11 +1,13 @@
+from datetime import date
 import json
 from django.db import reset_queries
 from django.http import response
 from django.shortcuts import render
 from rest_framework import viewsets
-from .serializers import QuestionSerializer, TagSerializer
+from .serializers import QuestionSerializer, TagSerializer, AnswerSerializer
 from .Model.Question import Question
 from .Model.Tag import Tag
+from .Model.Answer import Answer
 from rest_framework.decorators import api_view
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
@@ -76,5 +78,29 @@ def tagDetail(request, title):
         tag = Tag.objects.get(title=title)
         tagSerializer = TagSerializer(tag) 
         return JsonResponse(tagSerializer.data, safe=False)
+        
 
-            
+@api_view(['GET', 'POST', 'DELETE'])
+def answerList(request):
+    # post an answer
+    if request.method == 'POST':
+        answerData = JSONParser().parse(request)
+        answerSerializer = AnswerSerializer(data=answerData)
+        if answerSerializer.is_valid():
+            answerSerializer.save()
+            return JsonResponse(answerSerializer.data, status=status.HTTP_201_CREATED) 
+        return JsonResponse(answerSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'POST', 'DELETE'])
+def answerDetail(request, questionId):
+    # get answer by questionId
+    if request.method == 'GET':
+        try:
+            answers = Answer.objects.get(questionId=questionId)
+            answerSerializer = AnswerSerializer(answers) 
+            return JsonResponse(answerSerializer.data, safe=False)
+        except:
+            return JsonResponse({"error": "no answers"}, status=status.HTTP_400_BAD_REQUEST)
+
+        

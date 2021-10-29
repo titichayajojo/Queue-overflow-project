@@ -1,7 +1,9 @@
 # queueOverflowDB/serializers.py
+from django.db.models import fields
 from rest_framework import serializers
 from .Model.Question import Question
 from .Model.Tag import Tag
+from .Model.Answer import Answer
 
 class QuestionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -13,3 +15,8 @@ class TagSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Tag
         fields = ('title', 'description', 'createdAt')
+
+class AnswerSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Answer
+        fields = ('questionId','body', 'votes', 'writer', 'createdAt')
