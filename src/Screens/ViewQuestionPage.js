@@ -38,13 +38,12 @@ function ViewQuestionPage() {
       .catch((error) => console.error(error, error.stack));
   }, []);
 
-
   return (
     <div>
       <BodyDiv>
         {data &&
             data.map((element, index) => {
-              return <FetchRow key={element.id} value={element} />;
+              return <FetchRow key={element.id} value={element} params={params.item}/>;
         })}
       </BodyDiv>
     </div>
