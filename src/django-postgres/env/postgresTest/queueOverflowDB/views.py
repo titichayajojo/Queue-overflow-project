@@ -56,9 +56,9 @@ def questionDetail(request, id):
     # increase view by 1
     elif request.method == 'PUT':
         question = Question.objects.filter(id=id)
-        currentViews = Question.objects.values('views')[0]['views']
+        currentViews = question.values('views')[0]['views']
         question.update(views=currentViews+1)
-        return JsonResponse({"res": "views is updated by 1"}, safe=False)
+        return JsonResponse({"views": currentViews+1, "previousView" : currentViews}, safe=False)
 
 @api_view(['GET', 'POST', 'DELETE'])
 def tagList(request):
