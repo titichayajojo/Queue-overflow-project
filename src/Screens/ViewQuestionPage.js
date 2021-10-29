@@ -19,10 +19,27 @@ export const Border = styled.div`
 function ViewQuestionPage() {
   let params = useParams();
   let [data, setData] = useState(null);
+  let [updateData, setUpdatedData] = useState(null);
 
   useEffect(async () => {
     var headers = {};
-     await fetch("http://127.0.0.1:8000/api/question/" + params.item, {
+    await fetch("http://127.0.0.1:8000/api/question/" + params.item + "/", {
+      method: "PUT",
+      mode: "cors",
+      headers: headers,
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((jsonResponse) => {
+        console.log(jsonResponse)
+        setUpdatedData(jsonResponse);
+      })
+      .catch((error) => console.error(error, error.stack));
+
+    await fetch("http://127.0.0.1:8000/api/question/" + params.item, {
       method: "GET",
       mode: "cors",
       headers: headers,
@@ -33,6 +50,7 @@ function ViewQuestionPage() {
         }
       })
       .then((jsonResponse) => {
+        console.log(jsonResponse)
         setData(jsonResponse);
       })
       .catch((error) => console.error(error, error.stack));
@@ -42,9 +60,11 @@ function ViewQuestionPage() {
     <div>
       <BodyDiv>
         {data &&
-            data.map((element, index) => {
-              return <FetchRow key={element.id} value={element} params={params.item}/>;
-        })}
+          data.map((element, index) => {
+            return (
+              <FetchRow key={element.id} value={element} params={params.item} />
+            );
+          })}
       </BodyDiv>
     </div>
   );
