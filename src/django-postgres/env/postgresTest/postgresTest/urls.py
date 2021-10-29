@@ -27,4 +27,8 @@ urlpatterns = [
     #tag
     url(r'api/tags', views.tagList),
     url(r'api/tag/(?P<title>[\w\-]+)/$', views.tagDetail),
+
+    #answer
+    url(r'api/answers', views.answerList),
+    url(r'api/answer/(?P<questionId>\d+)/$', views.answerDetail),
 ]
