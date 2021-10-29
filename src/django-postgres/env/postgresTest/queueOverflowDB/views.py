@@ -4,22 +4,13 @@ from django.http import response
 from django.shortcuts import render
 from rest_framework import viewsets
 from .serializers import TeacherSerializer, QuestionSerializer
-from .models import Teacher, Question
+from .Model.Question import Teacher, Question
 from rest_framework.decorators import api_view
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
 from rest_framework import status
 from rest_framework.renderers import JSONRenderer
 from .functions.index import calculateNDaysAgo
-
-def to_dict(instance):
-    opts = instance._meta
-    data = {}
-    for f in chain(opts.concrete_fields, opts.private_fields):
-        data[f.name] = f.value_from_object(instance)
-    for f in opts.many_to_many:
-        data[f.name] = [i.id for i in f.value_from_object(instance)]
-    return data
 
 @api_view(['GET', 'POST', 'DELETE'])
 def getAllTeachers(request):
@@ -67,5 +58,5 @@ def questionDetail(request, id):
         element = json.loads(json.dumps(dict))
         element["askedDate"] = calculateNDaysAgo(element.get('createdAt'))
         res.append(element)
-        return JsonResponse(res, safe=False) 
+        return JsonResponse(res, safe=False)
             

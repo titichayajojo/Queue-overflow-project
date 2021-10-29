@@ -1,6 +1,6 @@
 # queueOverflowDB/serializers.py
 from rest_framework import serializers
-from .models import Teacher, Question
+from .Model.Question import Teacher, Question
 
 class TeacherSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
