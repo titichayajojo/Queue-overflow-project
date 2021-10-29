@@ -40,7 +40,7 @@ def questionsList(request):
             return JsonResponse(questionSerializer.data, status=status.HTTP_201_CREATED) 
         return JsonResponse(questionSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-@api_view(['GET', 'POST', 'DELETE'])
+@api_view(['GET', 'PUT', 'DELETE'])
 def questionDetail(request, id):
     # get question by id
     if request.method == 'GET':
@@ -52,6 +52,13 @@ def questionDetail(request, id):
         element["askedDate"] = calculateNDaysAgo(element.get('createdAt'))
         res.append(element)
         return JsonResponse(res, safe=False)
+    
+    # increase view by 1
+    elif request.method == 'PUT':
+        question = Question.objects.filter(id=id)
+        currentViews = Question.objects.values('views')[0]['views']
+        question.update(views=currentViews+1)
+        return JsonResponse({"res": "views is updated by 1"}, safe=False)
 
 @api_view(['GET', 'POST', 'DELETE'])
 def tagList(request):
