@@ -97,8 +97,8 @@ def answerDetail(request, questionId):
     # get answer by questionId
     if request.method == 'GET':
         try:
-            answers = Answer.objects.get(questionId=questionId)
-            answerSerializer = AnswerSerializer(answers) 
+            answers = Answer.objects.filter(questionId=questionId)
+            answerSerializer = AnswerSerializer(answers, many=True) 
             return JsonResponse(answerSerializer.data, safe=False)
         except:
             return JsonResponse({"error": "no answers"}, status=status.HTTP_400_BAD_REQUEST)

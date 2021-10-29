@@ -1,11 +1,11 @@
 import VoteRow from "./VoteRow";
 import ProfileRow from "./ProfileRow";
 
-function AnswersRow() {
+function AnswersRow(props) {
   return (
     <div>
-      <VoteRow />
-      <ProfileRow />
+      <VoteRow value={props.value}/>
+      <ProfileRow value={props.value}/>
     </div>
   );
 }

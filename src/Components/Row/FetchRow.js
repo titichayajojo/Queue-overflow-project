@@ -6,6 +6,7 @@ import VoteRow from "../Row/VoteRow";
 import TagsRow from "../Row/TagsRow";
 import ProfileRow from "../Row/ProfileRow";
 import AnswersRow from "../Row/AnswersRow";
+import { useEffect, useState } from "react";
 
 const TotalAnswers = styled.div`
   display: grid;
@@ -52,24 +53,50 @@ const AnswerButtonRow = styled.div`
 `;
 
 function FetchRow(props) {
+  const params = props.params;
+  let [data, setData] = useState(null);
+
+  useEffect(async () => {
+    var headers = {};
+    await fetch("http://127.0.0.1:8000/api/answer/" + params, {
+      method: "GET",
+      mode: "cors",
+      headers: headers,
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((jsonResponse) => {
+        setData(jsonResponse);
+      })
+      .catch((error) => console.error(error, error.stack));
+  }, []);
 
   return (
-    <div>
-      <ViewQuestionHeader value={props.value}/>
-      <VoteRow value={props.value}/>
-      <TagsRow value={props.value}/>
-      <ProfileRow value={props.value}/>
-      <TotalAnswers>{props.value.answers} Answers</TotalAnswers>
-      <AnswersRow />
-      <AnswersRow />
-      <YourAnswer>Your Answer</YourAnswer>
-      <AnswerInputRow>
-        <AnswerInput></AnswerInput>
-      </AnswerInputRow>
-      <AnswerButtonRow>
-        <BlueButton>Post&nbsp;Your&nbsp;Answer</BlueButton>
-      </AnswerButtonRow>
-    </div>
+    data && (
+      <div>
+        <ViewQuestionHeader value={props.value} />
+        <VoteRow value={props.value} />
+        <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+          <TagsRow value={props.value} />
+        </div>
+        <ProfileRow value={props.value} />
+        <TotalAnswers>{Object.keys(data).length} Answers</TotalAnswers>
+        {data.map((element, index) => {
+          return <AnswersRow key={element.id} value={element} />;
+        })}
+
+        <YourAnswer>Your Answer</YourAnswer>
+        <AnswerInputRow>
+          <AnswerInput></AnswerInput>
+        </AnswerInputRow>
+        <AnswerButtonRow>
+          <BlueButton>Post&nbsp;Your&nbsp;Answer</BlueButton>
+        </AnswerButtonRow>
+      </div>
+    )
   );
 }
 
