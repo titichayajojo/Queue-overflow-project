@@ -1,13 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 
-class Teacher(models.Model):
-    name = models.CharField(max_length=80)
-    age = models.IntegerField()
-
-def __str__(self):
-        return self.name
-
 class Question(models.Model):
     title = models.CharField(max_length=200, blank=False, default='')
     body = models.TextField(blank=False, default='')

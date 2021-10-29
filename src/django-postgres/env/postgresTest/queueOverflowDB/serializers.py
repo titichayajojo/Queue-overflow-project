@@ -1,12 +1,7 @@
 # queueOverflowDB/serializers.py
 from rest_framework import serializers
-from .Model.Question import Teacher, Question
+from .Model.Question import Question
 from .Model.Tag import Tag
-
-class TeacherSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Teacher
-        fields = ('name', 'age')
 
 class QuestionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
