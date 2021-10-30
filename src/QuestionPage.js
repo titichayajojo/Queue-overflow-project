@@ -1,10 +1,19 @@
 import styled from "styled-components";
+import TagPage from "../src/Container/TagPage";
 import QuestionRow from "./QuestionRow";
 import { useEffect, useState } from "react";
 import TabBar from "../src/Components/Button/TabBar";
 import classes from "./QuestionPage.module.css";
 import Loader from "react-loader-spinner";
-import { Link } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGripLinesVertical } from "@fortawesome/free-solid-svg-icons";
+import {
+  faComment,
+  faPizzaSlice,
+  faTags,
+  faTrophy,
+} from "@fortawesome/free-solid-svg-icons";
 
 const StyledHeader = styled.h1`
   font-size: 1.8rem;
@@ -30,8 +39,25 @@ const BlueButton = styled(Link)`
 const TabBars = [{ name: "Questions" }, { name: "Tags" }, { name: "Users" }];
 
 function QuestionPage() {
+  const history = useHistory();
   let [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const curButton = queryParams.get("choice");
+
+  const SubPage = () => {
+    switch (curButton) {
+      case "Tags":
+        return <TagPage />;
+      default:
+        return <div />;
+    }
+  };
+
+  useEffect(() => {
+    history.push("/feature?choice=" + "Questions");
+  }, []);
   useEffect(() => {
     var headers = {};
     fetch("http://127.0.0.1:8000/api/questions", {
@@ -56,16 +82,39 @@ function QuestionPage() {
     <div>
       <div className={classes.row}>
         <div className={classes.menubar}>
+          <div
+            className={classes.heading1}
+            style={{ marginTop: 40, marginLeft: 40 }}
+          >
+            Home
+          </div>
+          <div
+            className={classes.heading1}
+            style={{ marginTop: 40, marginLeft: 40 }}
+          >
+            PUBLIC
+          </div>
+          <div
+            className={classes.row}
+            style={{ marginTop: 40, alignItems: "center" }}
+          >
+            <FontAwesomeIcon
+              icon={faTags}
+              size="1x"
+              color={"white"}
+              style={{ margin: 10 }}
+            />
+            <div className={classes.heading1} style={{}}>
+              Stack Overflow
+            </div>
+          </div>
+
           {TabBars.map((item) => {
             return <TabBar title={item.name} />;
           })}
         </div>
         <div className={classes.mainPage}>
-          <HeaderRow>
-            <StyledHeader>Top Questions</StyledHeader>
-            <BlueButton to={"/AskPage"}>Ask&nbsp;Question</BlueButton>
-          </HeaderRow>
-          <div className={classes.questionContainer}>
+          {/* <div className={classes.questionContainer} style={{}}>
             <Loader
               type="ThreeDots"
               color="white"
@@ -73,11 +122,27 @@ function QuestionPage() {
               width={150}
               visible={loading}
             />
+          </div> */}
+          {data != null && curButton === "Questions" && (
+            <HeaderRow>
+              <StyledHeader>Top Questions</StyledHeader>
+              <BlueButton to={"/AskPage"}>Ask&nbsp;Question</BlueButton>
+            </HeaderRow>
+          )}
+          <div style={{}}>
+            {data != null &&
+              curButton === "Questions" &&
+              data.map((element, index) => {
+                return <QuestionRow key={element.id} value={element} />;
+              })}
+            <div
+              style={{
+                width: "100%",
+              }}
+            >
+              {SubPage()}
+            </div>
           </div>
-          {data &&
-            data.map((element, index) => {
-              return <QuestionRow key={element.id} value={element} />;
-            })}
         </div>
       </div>
     </div>

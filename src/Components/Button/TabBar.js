@@ -10,7 +10,6 @@ const TabBar = (props) => {
   const queryParams = new URLSearchParams(location.search);
   const curButton = queryParams.get("choice");
 
-  console.log(curButton);
   return (
     <div
       onClick={() => {
@@ -18,15 +17,15 @@ const TabBar = (props) => {
       }}
       className={classes.bar}
       style={{
-        backgroundColor:
-          curButton === props.title ? "rgb(241,242,243)" : "white",
+        backgroundColor: curButton === props.title ? "#3D3D3D" : "#2D2D2D",
       }}
     >
       {/* <div style={{ color: "balck" }}>Questions</div> */}
       <div
         style={{
-          color: "black",
-
+          color: "#C1C1C2",
+          padding: 10,
+          paddingLeft: 50,
           fontSize: 20,
           fontWeight: "bold",
         }}
