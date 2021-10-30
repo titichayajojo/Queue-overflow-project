@@ -43,7 +43,10 @@ def questionsList(request):
 @api_view(['GET', 'PUT', 'DELETE'])
 def questionDetail(request, id):
     # get question by id
+    print("eiei")
+    print(id)
     if request.method == 'GET':
+        print("eiei1")
         question = Question.objects.get(id=id)
         questionSerializer = QuestionSerializer(question) 
         dict = questionSerializer.data
@@ -55,6 +58,7 @@ def questionDetail(request, id):
     
     # increase view by 1
     elif request.method == 'PUT':
+        print("eiei2")
         question = Question.objects.filter(id=id)
         currentViews = Question.objects.values('views')[0]['views']
         question.update(views=currentViews+1)
@@ -103,6 +107,7 @@ def answerList(request):
 def answerDetail(request, questionId):
     # get answer by questionId
     if request.method == 'GET':
+        print(questionId);
         try:
             answers = Answer.objects.filter(questionId=questionId)
             answerSerializer = AnswerSerializer(answers, many=True) 

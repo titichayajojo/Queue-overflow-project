@@ -16,50 +16,54 @@ export const Border = styled.div`
   width: 50vw;
 `;
 
-function ViewQuestionPage() {
+function ViewQuestionPage(props) {
   let params = useParams();
   let [data, setData] = useState(null);
   let [updateData, setUpdatedData] = useState(null);
 
   useEffect(async () => {
     var headers = {};
-    await fetch("http://127.0.0.1:8000/api/question/" + params.item + "/", {
-      method: "PUT",
-      mode: "cors",
-      headers: headers,
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
+    async function fetchData() {
+      await fetch("http://127.0.0.1:8000/api/question/" + params.item, {
+        method: "GET",
+        mode: "cors",
+        headers: headers,
       })
-      .then((jsonResponse) => {
-        console.log(jsonResponse)
-        setUpdatedData(jsonResponse);
-      })
-      .catch((error) => console.error(error, error.stack));
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          }
+        })
+        .then((jsonResponse) => {
+          console.log(jsonResponse);
+          setData(jsonResponse);
+        })
+        .catch((error) => console.error(error, error.stack));
 
-    await fetch("http://127.0.0.1:8000/api/question/" + params.item, {
-      method: "GET",
-      mode: "cors",
-      headers: headers,
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
+      await fetch("http://127.0.0.1:8000/api/question/" + params.item + "/", {
+        method: "PUT",
+        mode: "cors",
+        headers: headers,
       })
-      .then((jsonResponse) => {
-        console.log(jsonResponse)
-        setData(jsonResponse);
-      })
-      .catch((error) => console.error(error, error.stack));
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          }
+        })
+        .then((jsonResponse) => {
+          console.log(jsonResponse);
+          setUpdatedData(jsonResponse);
+        })
+        .catch((error) => console.error(error, error.stack));
+    }
+    fetchData();
   }, []);
-
+  console.log("kiki");
+  console.log("eiei");
   return (
     <div>
       <BodyDiv>
-        {data &&
+        {data != null &&
           data.map((element, index) => {
             return (
               <FetchRow key={element.id} value={element} params={params.item} />

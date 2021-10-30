@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import NormalButton from "../Components/Button/NormalButton";
 import TextInput from "../Components/Input/TextInput";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const buttons = [
   {

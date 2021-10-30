@@ -58,6 +58,7 @@ function FetchRow(props) {
 
   useEffect(async () => {
     var headers = {};
+    console.log("Params", params);
     await fetch("http://127.0.0.1:8000/api/answer/" + params, {
       method: "GET",
       mode: "cors",
@@ -75,11 +76,17 @@ function FetchRow(props) {
   }, []);
 
   return (
-    data && (
+    data != null && (
       <div>
         <ViewQuestionHeader value={props.value} />
         <VoteRow value={props.value} />
-        <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <TagsRow value={props.value} />
         </div>
         <ProfileRow value={props.value} />
