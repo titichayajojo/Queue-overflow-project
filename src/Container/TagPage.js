@@ -10,22 +10,24 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Grid from "@mui/material/Grid";
+import { useEffect, useState } from "react";
 const TagPage = (props) => {
-  const Tags = [
-    { name: "tag1" },
-    { name: "tag2" },
-    { name: "tag3" },
-    { name: "tag4" },
-    { name: "tag5" },
-    { name: "tag6" },
-    { name: "tag7" },
-    { name: "tag8" },
-    { name: "tag9" },
-    { name: "tag10" },
-    { name: "tag11" },
-    { name: "tag12" },
-    { name: "tag13" },
-  ];
+  const [items, setitems] = useState(props.tags);
+  const [text, setText] = useState("");
+  const [newItems, setnewItems] = useState(items);
+  useEffect(() => {
+    const searchHandler = (item) => {
+      if (items) {
+        setnewItems(
+          items.filter((item) =>
+            item.title.toLowerCase().includes(text.toLowerCase())
+          )
+        );
+      }
+    };
+    searchHandler();
+  }, [text]);
+
   return (
     <div className={classes.column} style={{ marginLeft: 10, marginTop: 100 }}>
       <div
@@ -61,8 +63,10 @@ const TagPage = (props) => {
             style={{ backgroundColor: "white", borderRadius: 20, width: 400 }}
             id="outlined-multiline-flexible"
             placeholder="Filter by tags"
-            //   value={value}
-            //   onChange={handleChange}
+            value={text}
+            onChange={(chunk) => {
+              setText(chunk.target.value);
+            }}
           />
           <ToggleButtonGroup
             color="primary"
@@ -79,26 +83,55 @@ const TagPage = (props) => {
           spacing={2}
           style={{
             width: "100%",
-            backgroundColor: "white",
+
             padding: 10,
             marginTop: 20,
           }}
         >
-          {Tags.map((item) => {
-            return (
-              <Grid item xs={12} xl={3}>
-                <div
-                  style={{
-                    height: 200,
-                    borderColor: "#D6D9DC",
-                    borderWidth: 2,
-                    borderStyle: "solid",
-                    borderRadius: 10,
-                  }}
-                ></div>
-              </Grid>
-            );
-          })}
+          {newItems != null &&
+            newItems.map((item) => {
+              return (
+                <Grid item xs={12} xl={3}>
+                  <div
+                    style={{
+                      height: 250,
+                      borderColor: "#D6D9DC",
+                      borderWidth: 2,
+                      borderStyle: "solid",
+                      borderRadius: 10,
+                      position: "relative",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <div
+                      style={{
+                        backgroundColor: "#E1ECF4",
+                        position: "absolute",
+                        paddingTop: 5,
+                        paddingBottom: 5,
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                        borderRadius: 4,
+                        top: 20,
+                        left: 20,
+                      }}
+                    >
+                      <div className={classes.tagName}>{item.title}</div>
+                    </div>
+                    <article
+                      lang="en"
+                      style={{
+                        fontFamily: "inherit",
+                        marginTop: 40,
+                        padding: 25,
+                      }}
+                    >
+                      <p style={{ color: "white" }}>{item.description}</p>
+                    </article>
+                  </div>
+                </Grid>
+              );
+            })}
         </Grid>
       </div>
     </div>
