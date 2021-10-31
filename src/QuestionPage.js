@@ -45,11 +45,12 @@ function QuestionPage() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const curButton = queryParams.get("choice");
+  const [tags, setTags] = useState(null);
 
   const SubPage = () => {
     switch (curButton) {
       case "Tags":
-        return <TagPage />;
+        return <TagPage tags={tags} />;
       default:
         return <div />;
     }
@@ -74,6 +75,25 @@ function QuestionPage() {
         console.log(jsonResponse);
         setData(jsonResponse);
         setLoading(false);
+      })
+      .catch((error) => console.error(error, error.stack));
+  }, []);
+
+  useEffect(() => {
+    var headers = {};
+    fetch("http://127.0.0.1:8000/api/tags", {
+      method: "GET",
+      mode: "cors",
+      headers: headers,
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((jsonResponse) => {
+        console.log(jsonResponse);
+        setTags(jsonResponse);
       })
       .catch((error) => console.error(error, error.stack));
   }, []);
