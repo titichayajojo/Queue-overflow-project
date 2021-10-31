@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import FetchRow from "../Components/Row/FetchRow";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-
+import { useEffect, useState, useCallback } from "react";
+import Loader from "react-loader-spinner";
 export const BodyDiv = styled.div`
   width: 100%;
   height: 100%;
@@ -17,56 +17,101 @@ export const Border = styled.div`
 `;
 
 function ViewQuestionPage(props) {
+  const [loading, setLoading] = useState(true);
   let params = useParams();
   let [data, setData] = useState(null);
   let [updateData, setUpdatedData] = useState(null);
+  const [data2, setData2] = useState(null);
+
+  const finishLoading = async () => {
+    setLoading(false);
+  };
+  const fetchData = useCallback(async () => {
+    var headers = {};
+    fetch("http://127.0.0.1:8000/api/question/" + params.item, {
+      method: "GET",
+      mode: "cors",
+      headers: headers,
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((jsonResponse) => {
+        console.log(jsonResponse);
+        setData(jsonResponse);
+      })
+      .catch((error) => console.error(error, error.stack));
+
+    fetch("http://127.0.0.1:8000/api/question/" + params.item + "/", {
+      method: "PUT",
+      mode: "cors",
+      headers: headers,
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((jsonResponse) => {
+        console.log(jsonResponse);
+        setUpdatedData(jsonResponse);
+      })
+      .catch((error) => console.error(error, error.stack));
+
+    fetch("http://127.0.0.1:8000/api/answer/" + params.item, {
+      method: "GET",
+      mode: "cors",
+      headers: headers,
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((jsonResponse) => {
+        setData2(jsonResponse);
+      })
+      .catch((error) => console.error(error, error.stack));
+  }, []);
 
   useEffect(async () => {
-    var headers = {};
-    async function fetchData() {
-      await fetch("http://127.0.0.1:8000/api/question/" + params.item, {
-        method: "GET",
-        mode: "cors",
-        headers: headers,
-      })
-        .then((res) => {
-          if (res.ok) {
-            return res.json();
-          }
-        })
-        .then((jsonResponse) => {
-          console.log(jsonResponse);
-          setData(jsonResponse);
-        })
-        .catch((error) => console.error(error, error.stack));
+    fetchData().then(() => {});
+  }, [fetchData]);
 
-      await fetch("http://127.0.0.1:8000/api/question/" + params.item + "/", {
-        method: "PUT",
-        mode: "cors",
-        headers: headers,
-      })
-        .then((res) => {
-          if (res.ok) {
-            return res.json();
-          }
-        })
-        .then((jsonResponse) => {
-          console.log(jsonResponse);
-          setUpdatedData(jsonResponse);
-        })
-        .catch((error) => console.error(error, error.stack));
+  useEffect(() => {
+    if (data && updateData && data2) {
+      finishLoading();
     }
-    fetchData();
-  }, []);
-  console.log("kiki");
-  console.log("eiei");
+  }, [data, updateData, data2]);
   return (
     <div>
-      <BodyDiv>
+      <Loader
+        style={{
+          position: "absolute",
+          marginLeft: "45%",
+          marginTop: "10%",
+        }}
+        type="ThreeDots"
+        color="white"
+        height={150}
+        width={150}
+        visible={loading}
+      />
+
+      <BodyDiv style={{}}>
         {data != null &&
+          updateData &&
+          data2 &&
           data.map((element, index) => {
             return (
-              <FetchRow key={element.id} value={element} params={params.item} />
+              <FetchRow
+                key={element.id}
+                value={element}
+                params={params.item}
+                data={data2}
+              />
             );
           })}
       </BodyDiv>

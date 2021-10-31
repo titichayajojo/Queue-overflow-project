@@ -54,29 +54,9 @@ const AnswerButtonRow = styled.div`
 
 function FetchRow(props) {
   const params = props.params;
-  let [data, setData] = useState(null);
-
-  useEffect(async () => {
-    var headers = {};
-    console.log("Params", params);
-    await fetch("http://127.0.0.1:8000/api/answer/" + params, {
-      method: "GET",
-      mode: "cors",
-      headers: headers,
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-      .then((jsonResponse) => {
-        setData(jsonResponse);
-      })
-      .catch((error) => console.error(error, error.stack));
-  }, []);
 
   return (
-    data != null && (
+    props.data != null && (
       <div>
         <ViewQuestionHeader value={props.value} />
         <VoteRow value={props.value} />
@@ -90,8 +70,8 @@ function FetchRow(props) {
           <TagsRow value={props.value} />
         </div>
         <ProfileRow value={props.value} />
-        <TotalAnswers>{Object.keys(data).length} Answers</TotalAnswers>
-        {data.map((element, index) => {
+        <TotalAnswers>{Object.keys(props.data).length} Answers</TotalAnswers>
+        {props.data.map((element, index) => {
           return <AnswersRow key={element.id} value={element} />;
         })}
 
