@@ -1,21 +1,24 @@
 import styled from "styled-components";
-import RichEditorEditor from '../Components/Input/RichTextEditor'
+import RichTextEditor from '../Components/Input/RichTextEditor'
+import { convertFromRaw, convertToRaw } from 'draft-js';
 import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
 
 const Container = styled.div`
   padding: 30px 20px;
 `;
 
 const BlueButton = styled.button`
+  font-size: 1rem;
   background-color: #378ad3;
   color: #fff;
   border: 0;
   border-radius: 5px;
   display: block;
-  height: 50px;
-  width: 150px;
   align-items: center;
   margin-bottom: 20px;
+  padding: 12px 10px;
 `;
 
 const StyledHeader = styled.h1`
@@ -57,7 +60,27 @@ const QuestionBodyText = styled.textarea`
   min-height: 200px;
   margin-bottom: 20px;
 `;
+
+async function postQuestion(body, writer, tags = ["test", "tag", "only"]){
+  console.log(body);
+  var title = document.getElementById("inTitle").value;
+  var headers = {};
+  await fetch("http://127.0.0.1:8000/api/questions", {
+    method: "POST",
+    mode: "cors",
+    headers: headers,
+    body: JSON.stringify({'title': title, 'body': body, 'tags': tags, 'writer': writer})
+  })
+  .then((res) => {
+    return res.json();
+  })
+  .then((jsonResponse) => {
+    console.log(jsonResponse)
+  })
+}
+
 function AskPage() {
+  const [text, setText] = useState(null);
   return (
     <div>
       <Container style={{}}>
@@ -68,7 +91,7 @@ function AskPage() {
         <TipLabel>
           Be specific and imagine you’re asking a question to another person
         </TipLabel>
-        <QuestionTitleInput
+        <QuestionTitleInput id="inTitle"
           type="text"
           placeholder="Title of your question"
         ></QuestionTitleInput>
@@ -76,9 +99,9 @@ function AskPage() {
         <TipLabel>
           Include all the information someone would need to answer your question
         </TipLabel>
-        <RichEditorEditor></RichEditorEditor> 
+        <RichTextEditor setText={setText}></RichTextEditor> 
         <BlueButton>Upload image</BlueButton>
-        <StyledHeader2>Tags</StyledHeader2>
+        <StyledHeader2 >Tags</StyledHeader2>
         <TipLabel>
           Add up to 5 tags to describe what your question is about
         </TipLabel>
@@ -86,7 +109,7 @@ function AskPage() {
           type="text"
           placeholder="e.g.(python html css)"
         ></QuestionTitleInput>
-        <BlueButton>Post your question</BlueButton>
+        <BlueButton onClick={async () => {await postQuestion(text, "Testee");}}>Post your question</BlueButton>
       </Container>
     </div>
   );
