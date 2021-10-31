@@ -14,6 +14,10 @@ from rest_framework.parsers import JSONParser
 from rest_framework import status
 from rest_framework.renderers import JSONRenderer
 from .functions.index import calculateNDaysAgo
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
+from rest_framework.authtoken.models import Token
 
 @api_view(['GET', 'POST', 'DELETE'])
 def questionsList(request):
@@ -33,20 +37,25 @@ def questionsList(request):
 
     # post a question
     elif request.method == 'POST':
-        questionData = JSONParser().parse(request)
-        questionSerializer = QuestionSerializer(data=questionData)
-        if questionSerializer.is_valid():
-            questionSerializer.save()
-            return JsonResponse(questionSerializer.data, status=status.HTTP_201_CREATED) 
-        return JsonResponse(questionSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try :
+            token = request.headers['Authorization']
+            username = Token.objects.get(key=token).user
+            questionData = JSONParser().parse(request)
+            questionData['writer'] = str(username)
+            questionSerializer = QuestionSerializer(data=questionData)
+            if questionSerializer.is_valid():
+                questionSerializer.save()
+                return JsonResponse(questionSerializer.data, status=status.HTTP_201_CREATED) 
+            return JsonResponse(questionSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return JsonResponse({"error": "please spcify token"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        
     
 @api_view(['GET', 'PUT', 'DELETE'])
 def questionDetail(request, id):
     # get question by id
-    print("eiei")
-    print(id)
     if request.method == 'GET':
-        print("eiei1")
         question = Question.objects.get(id=id)
         questionSerializer = QuestionSerializer(question) 
         dict = questionSerializer.data
@@ -58,7 +67,6 @@ def questionDetail(request, id):
     
     # increase view by 1
     elif request.method == 'PUT':
-        print("eiei2")
         question = Question.objects.filter(id=id)
         currentViews = question.values('views')[0]['views']
         question.update(views=currentViews+1)
@@ -86,8 +94,8 @@ def tagList(request):
 def tagDetail(request, title):
     # get question by title
     if request.method == 'GET':
-        tag = Tag.objects.get(title=title)
-        tagSerializer = TagSerializer(tag) 
+        tag = Tag.objects.filter(title__contains=title)
+        tagSerializer = TagSerializer(tag, many=True) 
         return JsonResponse(tagSerializer.data, safe=False)
         
 
@@ -107,12 +115,58 @@ def answerList(request):
 def answerDetail(request, questionId):
     # get answer by questionId
     if request.method == 'GET':
-        print(questionId);
         try:
             answers = Answer.objects.filter(questionId=questionId)
             answerSerializer = AnswerSerializer(answers, many=True) 
             return JsonResponse(answerSerializer.data, safe=False)
         except:
             return JsonResponse({"error": "no answers"}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def register(request):
+    # register
+    if request.method == 'POST':
+        try:
+            body_unicode = request.body.decode('utf-8')
+            body = json.loads(body_unicode)
+            firstName = body['firstName']
+            lastName = body['lastName']
+            username = body['username']
+            email = body['email']
+            password = body['password']
+            user = User.objects.create_user(username=username, first_name=firstName,last_name=lastName, email=email, password=password)
+            user.save()
+            return JsonResponse(body, safe=False)
+            
+        except(Exception):
+            return JsonResponse({"error": "username already exist"}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def login(request):
+    # login
+    if request.method == 'POST':
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        username = body['username']
+        user=authenticate(request,
+        username=username,
+        password=body['password'])
+        token = ""
+        
+        if user is not None :
+            # A backend authenticated the credentials
+            auth_login(request._request,user)
+            users = User.objects.all()
+            for user in users:
+                if user.username == username:
+                    token, created = Token.objects.get_or_create(user=user)
+                    token = token.key
+                    break
+            return JsonResponse({"username" : username, "token": token}, safe=False)
+        else:
+            # No backend authenticated the credentials
+            return JsonResponse({"error" : "username or password is incorrect"} ,status=status.HTTP_400_BAD_REQUEST)
+            
+
 
         
