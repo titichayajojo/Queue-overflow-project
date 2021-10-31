@@ -1,20 +1,29 @@
 import React from 'react';
 import {Editor, EditorState, RichUtils, getDefaultKeyBinding} from 'draft-js';
+import { convertFromRaw, convertToRaw } from 'draft-js';
 import './RichText.css';
 import '../../../node_modules/draft-js/dist/Draft.css'
 
 class RichTextEditor extends React.Component {
     constructor(props) {
       super(props);
+      this.myRef = React.createRef();
       this.state = {editorState: EditorState.createEmpty()};
 
       this.focus = () => this.refs.editor.focus();
-      this.onChange = (editorState) => this.setState({editorState});
+      this.onChange = (editorState) => {this.setState({editorState})
+    this.props.setText(convertToRaw(editorState.getCurrentContent()))
+    };
 
       this.handleKeyCommand = this._handleKeyCommand.bind(this);
       this.mapKeyToEditorCommand = this._mapKeyToEditorCommand.bind(this);
       this.toggleBlockType = this._toggleBlockType.bind(this);
       this.toggleInlineStyle = this._toggleInlineStyle.bind(this);
+    }
+
+    getBody(){
+      var contentState = this.state.editorState.getCurrentContent();
+      this.props.setText(contentState.getPlainText());
     }
 
     _handleKeyCommand(command, editorState) {
@@ -73,7 +82,7 @@ class RichTextEditor extends React.Component {
       }
 
       return (
-        <div className="RichEditor-root">
+        <div className="RichEditor-root" ref={this.myRef}>
           <BlockStyleControls
             editorState={editorState}
             onToggle={this.toggleBlockType}

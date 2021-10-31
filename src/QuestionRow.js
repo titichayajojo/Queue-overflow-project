@@ -75,7 +75,7 @@ function QuestionRow(props) {
         {views}
         <span>views</span>
       </QuestionStat>
-      <QuestionTitleArea>
+      <QuestionTitleArea style={{zIndex: 999999}}> 
         <QuestionLink to={"/ViewQuestionPage/" + id}>
           {title}
         </QuestionLink>
