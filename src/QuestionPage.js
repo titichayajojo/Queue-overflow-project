@@ -114,7 +114,7 @@ function QuestionPage() {
           })}
         </div>
 
-        <div className={classes.mainPage} style={{ backgroundColor: "red" }}>
+        <div className={classes.mainPage} style={{}}>
           <Loader
             style={{
               position: "absolute",
