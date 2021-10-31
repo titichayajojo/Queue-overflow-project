@@ -18,6 +18,7 @@ from django.contrib.auth.models import PermissionManager
 from django.urls import path, include
 from queueOverflowDB import views
 from django.conf.urls import url, include
+from rest_framework.authtoken import views as rest_framework_views
 
 
 urlpatterns = [
@@ -37,5 +38,6 @@ urlpatterns = [
     path('api/register', views.register),
 
     #login
-    path('api/login', views.login),
+    path('api/login', views.login, name='api-token-auth'),
+    url(r'^get_auth_token/$', rest_framework_views.obtain_auth_token, name='get_auth_token'),
 ]
