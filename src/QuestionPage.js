@@ -113,16 +113,21 @@ function QuestionPage() {
             return <TabBar title={item.name} />;
           })}
         </div>
-        <div className={classes.mainPage}>
-          {/* <div className={classes.questionContainer} style={{}}>
-            <Loader
-              type="ThreeDots"
-              color="white"
-              height={150}
-              width={150}
-              visible={loading}
-            />
-          </div> */}
+
+        <div className={classes.mainPage} style={{ backgroundColor: "red" }}>
+          <Loader
+            style={{
+              position: "absolute",
+              marginLeft: "35%",
+              marginTop: "10%",
+            }}
+            type="ThreeDots"
+            color="white"
+            height={150}
+            width={150}
+            visible={loading}
+          />
+
           {data != null && curButton === "Questions" && (
             <HeaderRow>
               <StyledHeader>Top Questions</StyledHeader>
