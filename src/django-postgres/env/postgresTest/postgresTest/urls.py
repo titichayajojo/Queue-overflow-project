@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.auth.models import PermissionManager
 from django.urls import path, include
 from queueOverflowDB import views
 from django.conf.urls import url, include
@@ -31,4 +32,10 @@ urlpatterns = [
     #answer
     path('api/answers', views.answerList),
     path('api/answer/<int:questionId>', views.answerDetail),
+
+    #register
+    path('api/register', views.register),
+
+    #login
+    path('api/login', views.login),
 ]

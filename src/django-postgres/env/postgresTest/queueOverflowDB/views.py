@@ -14,6 +14,8 @@ from rest_framework.parsers import JSONParser
 from rest_framework import status
 from rest_framework.renderers import JSONRenderer
 from .functions.index import calculateNDaysAgo
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 
 @api_view(['GET', 'POST', 'DELETE'])
 def questionsList(request):
@@ -109,5 +111,41 @@ def answerDetail(request, questionId):
             return JsonResponse(answerSerializer.data, safe=False)
         except:
             return JsonResponse({"error": "no answers"}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def register(request):
+    # register
+    if request.method == 'POST':
+        try:
+            body_unicode = request.body.decode('utf-8')
+            body = json.loads(body_unicode)
+            firstName = body['firstName']
+            lastName = body['lastName']
+            username = body['username']
+            email = body['email']
+            password = body['password']
+            user = User.objects.create_user(username=username, first_name=firstName,last_name=lastName, email=email, password=password)
+            return JsonResponse(body, safe=False)
+            
+        except(Exception):
+            return JsonResponse({"error": "username already exist"}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def login(request):
+    # login
+    if request.method == 'POST':
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        username = body['username']
+        password = body['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            # A backend authenticated the credentials
+            return JsonResponse({"res" : "user is logged in", "body" : body}, safe=False)
+        else:
+            # No backend authenticated the credentials
+            return JsonResponse({"error" : "username or password is incorrect"} ,status=status.HTTP_400_BAD_REQUEST)
+            
+
 
         
