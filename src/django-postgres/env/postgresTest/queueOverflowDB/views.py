@@ -38,10 +38,23 @@ def questionsList(request):
     # post a question
     elif request.method == 'POST':
         try :
+            body_data = json.loads(request.body)
             token = request.headers['Authorization']
             username = Token.objects.get(key=token).user
             questionData = JSONParser().parse(request)
             questionData['writer'] = str(username)
+
+            try:
+                tags = body_data['tags']
+                for tag in tags:
+                    tagData = Tag.objects.filter(title=tag)
+                    if not tagData.values('Asked'):
+                        return JsonResponse({"error": tag + " doesn't exist"}, status=status.HTTP_400_BAD_REQUEST)
+                    currentQuestionAsked = tagData.values('Asked')[0]['Asked']
+                    tagData.update(Asked=currentQuestionAsked+1)
+            except:
+                return JsonResponse({"error": "could not update tag"}, status=status.HTTP_400_BAD_REQUEST)
+                
             questionSerializer = QuestionSerializer(data=questionData)
             if questionSerializer.is_valid():
                 questionSerializer.save()
