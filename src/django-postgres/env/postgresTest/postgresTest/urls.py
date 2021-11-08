@@ -25,6 +25,7 @@ urlpatterns = [
     #question
     path('api/questions', views.questionsList),
     path('api/question/<int:id>/', views.questionDetail),
+    path('api/question/<str:keyword>/', views.searchQuestion),
 
     #tag
     path('api/tags', views.tagList),
