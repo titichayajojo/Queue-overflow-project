@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from rest_framework.authtoken.models import Token
 
 def calculateNDaysAgo(createdAt):
     today = datetime.today().strptime(datetime.today().strftime('%Y-%m-%d %H:%M:%S.%f'),'%Y-%m-%d %H:%M:%S.%f')
@@ -36,3 +37,6 @@ def calculateNDaysAgo(createdAt):
             String += 's'
 
     return String + " ago"
+
+def getUsernameFromToken(token):
+    return Token.objects.get(key=token).user

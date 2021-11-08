@@ -13,11 +13,12 @@ from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
 from rest_framework import status
 from rest_framework.renderers import JSONRenderer
-from .functions.index import calculateNDaysAgo
+from .functions.index import calculateNDaysAgo, getUsernameFromToken
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from rest_framework.authtoken.models import Token
+from django.db.models import Q
 
 @api_view(['GET', 'POST', 'DELETE'])
 def questionsList(request):
@@ -39,8 +40,7 @@ def questionsList(request):
     elif request.method == 'POST':
         try :
             body_data = json.loads(request.body)
-            token = request.headers['Authorization']
-            username = Token.objects.get(key=token).user
+            username = getUsernameFromToken(request.headers['Authorization'])
             questionData = JSONParser().parse(request)
             questionData['writer'] = str(username)
 
@@ -105,7 +105,7 @@ def tagList(request):
 
 @api_view(['GET', 'POST', 'DELETE'])
 def tagDetail(request, title):
-    # get question by title
+    # get tags by title
     if request.method == 'GET':
         tag = Tag.objects.filter(title__contains=title)
         tagSerializer = TagSerializer(tag, many=True) 
@@ -116,7 +116,13 @@ def tagDetail(request, title):
 def answerList(request):
     # post an answer
     if request.method == 'POST':
+        try:
+            username = getUsernameFromToken(request.headers['Authorization'])
+        except:
+            return JsonResponse({"error": "please spcify token"}, status=status.HTTP_400_BAD_REQUEST)
+            
         answerData = JSONParser().parse(request)
+        answerData['writer'] = str(username)
         answerSerializer = AnswerSerializer(data=answerData)
         if answerSerializer.is_valid():
             answerSerializer.save()
@@ -179,6 +185,16 @@ def login(request):
         else:
             # No backend authenticated the credentials
             return JsonResponse({"error" : "username or password is incorrect"} ,status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def searchQuestion(request, keyword):
+    if request.method == 'GET':
+        try:
+            questions = Question.objects.filter(Q(title__contains=keyword) | Q(writer__contains=keyword) | Q(tags__contains=[keyword]))
+            questionSerializer = QuestionSerializer(questions, many=True) 
+            return JsonResponse(questionSerializer.data, safe=False)
+        except:
+            return JsonResponse({"error": "no questions"}, status=status.HTTP_400_BAD_REQUEST)
             
 
 
