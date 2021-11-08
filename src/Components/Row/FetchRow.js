@@ -7,6 +7,7 @@ import TagsRow from "../Row/TagsRow";
 import ProfileRow from "../Row/ProfileRow";
 import AnswersRow from "../Row/AnswersRow";
 import { useEffect, useState } from "react";
+import RichTextEditor from "../Input/RichTextEditor"
 
 const TotalAnswers = styled.div`
   display: grid;
@@ -53,6 +54,7 @@ const AnswerButtonRow = styled.div`
 `;
 
 function FetchRow(props) {
+  const [text, setText] = useState(null);
   const params = props.params;
 
   return (
@@ -77,7 +79,7 @@ function FetchRow(props) {
 
         <YourAnswer>Your Answer</YourAnswer>
         <AnswerInputRow>
-          <AnswerInput></AnswerInput>
+          <RichTextEditor setText={setText}></RichTextEditor>
         </AnswerInputRow>
         <AnswerButtonRow>
           <BlueButton>Post&nbsp;Your&nbsp;Answer</BlueButton>
