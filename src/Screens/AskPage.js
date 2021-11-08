@@ -61,15 +61,15 @@ const QuestionBodyText = styled.textarea`
   margin-bottom: 20px;
 `;
 
-async function postQuestion(body, writer, tags = ["test", "tag", "only"]){
+async function postQuestion(body, tags = ["python", "html", "css"]){
   console.log(body);
   var title = document.getElementById("inTitle").value;
-  var headers = {};
+  var headers = {'Authorization' : "4ac201a63372eb50e301263ceeaacbb83c762f78"};
   await fetch("http://127.0.0.1:8000/api/questions", {
     method: "POST",
     mode: "cors",
     headers: headers,
-    body: JSON.stringify({'title': title, 'body': body, 'tags': tags, 'writer': writer})
+    body: JSON.stringify({'title': title, 'body': body, 'tags': tags})
   })
   .then((res) => {
     return res.json();
@@ -109,7 +109,7 @@ function AskPage() {
           type="text"
           placeholder="e.g.(python html css)"
         ></QuestionTitleInput>
-        <BlueButton onClick={async () => {await postQuestion(text, "Testee");}}>Post your question</BlueButton>
+        <BlueButton onClick={async () => {await postQuestion(text);}}>Post your question</BlueButton>
       </Container>
     </div>
   );
