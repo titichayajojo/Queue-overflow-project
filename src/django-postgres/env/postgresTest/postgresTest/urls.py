@@ -26,6 +26,8 @@ urlpatterns = [
     path('api/questions', views.questionsList),
     path('api/question/<int:id>/', views.questionDetail),
     path('api/question/<str:keyword>/', views.searchQuestion),
+    path('api/question/vote/<int:id>/', views.voteQuestion),
+    path('api/question/devote/<int:id>/', views.devoteQuestion),
 
     #tag
     path('api/tags', views.tagList),
@@ -34,6 +36,8 @@ urlpatterns = [
     #answer
     path('api/answers', views.answerList),
     path('api/answer/<int:questionId>', views.answerDetail),
+    path('api/answer/vote/<int:id>/', views.voteAnswer),
+    path('api/answer/devote/<int:id>/', views.devoteAnswer),
 
     #register
     path('api/register', views.register),
