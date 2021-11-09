@@ -195,7 +195,88 @@ def searchQuestion(request, keyword):
             return JsonResponse(questionSerializer.data, safe=False)
         except:
             return JsonResponse({"error": "no questions"}, status=status.HTTP_400_BAD_REQUEST)
-            
+
+@api_view(['PUT'])
+def voteQuestion(request, id):
+    if request.method == 'PUT':
+        try:
+            username = getUsernameFromToken(request.headers['Authorization'])
+        except:
+            return JsonResponse({"error": "please spcify token"}, status=status.HTTP_400_BAD_REQUEST)
+
+        question = Question.objects.filter(id=id)
+        array = question.values('voters')[0]['voters']
+
+        if str(username) in array:
+            return JsonResponse({"error": "you can vote only once"}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            array.append(str(username))
+            question.update(voters=array)
+            currentVotes = question.values('votes')[0]['votes']
+            question.update(votes=currentVotes+1)
+            return JsonResponse({"votes": currentVotes+1, "previousVotes" : currentVotes, 'voters': array}, safe=False)
+
+
+@api_view(['PUT'])
+def devoteQuestion(request, id):
+    if request.method == 'PUT':
+        try:
+            username = getUsernameFromToken(request.headers['Authorization'])
+        except:
+            return JsonResponse({"error": "please spcify token"}, status=status.HTTP_400_BAD_REQUEST)
+
+        question = Question.objects.filter(id=id)
+        array = question.values('voters')[0]['voters']
+
+        if str(username) in array:
+            return JsonResponse({"error": "you can vote only once"}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            array.append(str(username))
+            question.update(voters=array)
+            currentVotes = question.values('votes')[0]['votes']
+            question.update(votes=currentVotes-1)
+            return JsonResponse({"votes": currentVotes-1, "previousVotes" : currentVotes, 'voters': array}, safe=False)    
+
+@api_view(['PUT'])
+def voteAnswer(request, id):
+    if request.method == 'PUT':
+        try:
+            username = getUsernameFromToken(request.headers['Authorization'])
+        except:
+            return JsonResponse({"error": "please spcify token"}, status=status.HTTP_400_BAD_REQUEST)
+
+        answer = Answer.objects.filter(id=id)
+        array = answer.values('voters')[0]['voters']
+
+        if str(username) in array:
+            return JsonResponse({"error": "you can vote only once"}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            array.append(str(username))
+            answer.update(voters=array)
+            currentVotes = answer.values('votes')[0]['votes']
+            answer.update(votes=currentVotes+1)
+            return JsonResponse({"votes": currentVotes+1, "previousVotes" : currentVotes, 'voters': array}, safe=False)
+
+
+@api_view(['PUT'])
+def devoteAnswer(request, id):
+    if request.method == 'PUT':
+        try:
+            username = getUsernameFromToken(request.headers['Authorization'])
+        except:
+            return JsonResponse({"error": "please spcify token"}, status=status.HTTP_400_BAD_REQUEST)
+
+        answer = Answer.objects.filter(id=id)
+        array = answer.values('voters')[0]['voters']
+
+        if str(username) in array:
+            return JsonResponse({"error": "you can vote only once"}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            array.append(str(username))
+            answer.update(voters=array)
+            currentVotes = answer.values('votes')[0]['votes']
+            answer.update(votes=currentVotes-1)
+            return JsonResponse({"votes": currentVotes-1, "previousVotes" : currentVotes, 'voters': array}, safe=False)       
 
 
         
