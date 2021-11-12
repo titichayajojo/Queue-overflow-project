@@ -38,9 +38,11 @@ def questionsList(request):
 
     # post a question
     elif request.method == 'POST':
-        try :
+            try :
+                username = getUsernameFromToken(request.headers['Authorization'])
+            except:
+                return JsonResponse({"error": "please spcify token"}, status=status.HTTP_400_BAD_REQUEST)
             body_data = json.loads(request.body)
-            username = getUsernameFromToken(request.headers['Authorization'])
             questionData = JSONParser().parse(request)
             questionData['writer'] = str(username)
 
@@ -60,10 +62,7 @@ def questionsList(request):
                 questionSerializer.save()
                 return JsonResponse(questionSerializer.data, status=status.HTTP_201_CREATED) 
             return JsonResponse(questionSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except:
-            return JsonResponse({"error": "please spcify token"}, status=status.HTTP_400_BAD_REQUEST)
-        
-        
+       
     
 @api_view(['GET', 'PUT', 'DELETE'])
 def questionDetail(request, id):

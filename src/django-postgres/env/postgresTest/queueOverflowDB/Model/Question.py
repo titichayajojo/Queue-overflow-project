@@ -15,7 +15,7 @@ class Question(models.Model):
     tags = ArrayField(models.CharField(max_length=50))
     writer = models.TextField(max_length=50, blank=False, default='')
     createdAt = models.DateTimeField(auto_now_add=True, blank=True)
-    voters = ArrayField(models.CharField(max_length=50, default=[]))
+    voters = ArrayField(models.CharField(max_length=50, default=''), default=list())
 
 
 
