@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import RichTextEditor from '../Components/Input/RichTextEditor'
+import TagsInput from "../Components/Input/TagsInput";
 import { convertFromRaw, convertToRaw } from 'draft-js';
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -61,8 +62,9 @@ const QuestionBodyText = styled.textarea`
   margin-bottom: 20px;
 `;
 
-async function postQuestion(body, tags = ["python", "html", "css"]){
+async function postQuestion(body, tags){
   console.log(body);
+  console.log(tags);
   var title = document.getElementById("inTitle").value;
   var headers = {'Authorization' : "4ac201a63372eb50e301263ceeaacbb83c762f78"};
   await fetch("http://127.0.0.1:8000/api/questions", {
@@ -76,11 +78,13 @@ async function postQuestion(body, tags = ["python", "html", "css"]){
   })
   .then((jsonResponse) => {
     console.log(jsonResponse)
+    window.location.replace("/HomePage")
   })
 }
 
 function AskPage() {
   const [text, setText] = useState(null);
+  const [selectedTags, setSelectedTags] = useState(null);
   return (
     <div>
       <Container style={{}}>
@@ -105,11 +109,8 @@ function AskPage() {
         <TipLabel>
           Add up to 5 tags to describe what your question is about
         </TipLabel>
-        <QuestionTitleInput
-          type="text"
-          placeholder="e.g.(python html css)"
-        ></QuestionTitleInput>
-        <BlueButton onClick={async () => {await postQuestion(text);}}>Post your question</BlueButton>
+        <TagsInput setSelectedTags={setSelectedTags}></TagsInput>
+        <BlueButton onClick={async () => {await postQuestion(text, selectedTags);}}>Post your question</BlueButton>
       </Container>
     </div>
   );
