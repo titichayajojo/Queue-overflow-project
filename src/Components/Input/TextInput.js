@@ -5,7 +5,14 @@ export default function TextInput(props) {
   return (
     <div className={classes.textInput}>
       <div style={{ color: "black", color: "grey" }}>{props.title}</div>
-      <TextField className={classes.textField} sx={{ marginTop: 1 }} />
+      <TextField
+        className={classes.textField}
+        sx={{ marginTop: 1 }}
+        value={props.value}
+        onChange={(text) => {
+          props.setValue(text.target.value);
+        }}
+      />
     </div>
   );
 }
