@@ -45,9 +45,11 @@ function QuestionPage() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const curButton = queryParams.get("choice");
+  const search = queryParams.get("input");
   const [tags, setTags] = useState(null);
 
   const SubPage = () => {
+    console.log("search", data);
     switch (curButton) {
       case "Tags":
         return <TagPage tags={tags} />;
@@ -73,11 +75,16 @@ function QuestionPage() {
       })
       .then((jsonResponse) => {
         console.log(jsonResponse);
-        setData(jsonResponse);
+        if (search) {
+          setData(jsonResponse.filter((item) => item.title.includes(search)));
+        } else {
+          setData(jsonResponse);
+        }
+
         setLoading(false);
       })
       .catch((error) => console.error(error, error.stack));
-  }, []);
+  }, [search]);
 
   useEffect(() => {
     var headers = {};
