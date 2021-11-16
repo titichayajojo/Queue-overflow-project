@@ -75,10 +75,8 @@ function QuestionRow(props) {
         {views}
         <span>views</span>
       </QuestionStat>
-      <QuestionTitleArea style={{zIndex: 999999}}> 
-        <QuestionLink to={"/ViewQuestionPage/" + id}>
-          {title}
-        </QuestionLink>
+      <QuestionTitleArea>
+        <QuestionLink to={"/ViewQuestionPage/" + id}>{title}</QuestionLink>
         <WhoAndWhen>
           {nDaysAgo} <UserLink>{writer}</UserLink>
         </WhoAndWhen>
