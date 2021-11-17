@@ -76,7 +76,14 @@ function QuestionPage() {
       .then((jsonResponse) => {
         console.log(jsonResponse);
         if (search) {
-          setData(jsonResponse.filter((item) => item.title.includes(search)));
+          setData(
+            jsonResponse.filter(
+              (item) =>
+                item.title.includes(search) ||
+                item.tags.includes(search) ||
+                item.writer.includes(search)
+            )
+          );
         } else {
           setData(jsonResponse);
         }
