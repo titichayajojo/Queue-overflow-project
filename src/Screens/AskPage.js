@@ -63,8 +63,6 @@ const QuestionBodyText = styled.textarea`
 `;
 
 async function postQuestion(body, tags) {
-  console.log(body);
-  console.log(tags);
   var title = document.getElementById("inTitle").value;
   var headers = { Authorization: "4ac201a63372eb50e301263ceeaacbb83c762f78" };
   await fetch("http://127.0.0.1:8000/api/questions", {
@@ -84,7 +82,7 @@ async function postQuestion(body, tags) {
 
 function AskPage() {
   const [text, setText] = useState(null);
-  const [selectedTags, setSelectedTags] = useState(null); 
+  const [selectedTags, setSelectedTags] = useState(null);
 
   return (
     <div>

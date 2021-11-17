@@ -7,7 +7,7 @@ import TagsRow from "../Row/TagsRow";
 import ProfileRow from "../Row/ProfileRow";
 import AnswersRow from "../Row/AnswersRow";
 import { useEffect, useState } from "react";
-import RichTextEditor from "../Input/RichTextEditor"
+import RichTextEditor from "../Input/RichTextEditor";
 
 const TotalAnswers = styled.div`
   display: grid;
@@ -53,39 +53,59 @@ const AnswerButtonRow = styled.div`
   margin-right: 660px;
 `;
 
+async function postAnswer(id, body) {
+  var headers = { Authorization: "4ac201a63372eb50e301263ceeaacbb83c762f78" };
+  await fetch("http://127.0.0.1:8000/api/answers", {
+    method: "POST",
+    mode: "cors",
+    headers: headers,
+    body: JSON.stringify({ questionId: id, body: body }),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((jsonResponse) => {
+      console.log(jsonResponse);
+    });
+}
+
 function FetchRow(props) {
   const [text, setText] = useState(null);
   const params = props.params;
 
   return (
-    props.data != null && (
-      <div>
-        <ViewQuestionHeader value={props.value} />
-        <VoteRow value={props.value} />
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+    <div>
+      <ViewQuestionHeader value={props.value} />
+      <VoteRow value={props.value} />
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <TagsRow value={props.value} />
+      </div>
+      <ProfileRow value={props.value} />
+      <TotalAnswers>{Object.keys(props.data).length} Answers</TotalAnswers>
+      {props.data.map((element, index) => {
+        return <AnswersRow key={element.id} value={element} />;
+      })}
+
+      <YourAnswer>Your Answer</YourAnswer>
+      <AnswerInputRow>
+        <RichTextEditor setText={setText}></RichTextEditor>
+      </AnswerInputRow>
+      <AnswerButtonRow>
+        <BlueButton
+          onClick={async () => {
+            await postAnswer(params, text);
           }}
         >
-          <TagsRow value={props.value} />
-        </div>
-        <ProfileRow value={props.value} />
-        <TotalAnswers>{Object.keys(props.data).length} Answers</TotalAnswers>
-        {props.data.map((element, index) => {
-          return <AnswersRow key={element.id} value={element} />;
-        })}
-
-        <YourAnswer>Your Answer</YourAnswer>
-        <AnswerInputRow>
-          <RichTextEditor setText={setText}></RichTextEditor>
-        </AnswerInputRow>
-        <AnswerButtonRow>
-          <BlueButton>Post&nbsp;Your&nbsp;Answer</BlueButton>
-        </AnswerButtonRow>
-      </div>
-    )
+          Post&nbsp;Your&nbsp;Answer
+        </BlueButton>
+      </AnswerButtonRow>
+    </div>
   );
 }
 
