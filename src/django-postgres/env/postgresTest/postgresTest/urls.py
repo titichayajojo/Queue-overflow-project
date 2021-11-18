@@ -38,6 +38,7 @@ urlpatterns = [
     path('api/answer/<int:questionId>', views.answerDetail),
     path('api/answer/vote/<int:id>/', views.voteAnswer),
     path('api/answer/devote/<int:id>/', views.devoteAnswer),
+    path('api/answer/question/<int:answerId>', views.getQuestionByAnswerId),
 
     #register
     path('api/register', views.register),
@@ -45,4 +46,7 @@ urlpatterns = [
     #login
     path('api/login', views.login, name='api-token-auth'),
     url(r'^get_auth_token/$', rest_framework_views.obtain_auth_token, name='get_auth_token'),
+
+    #user
+    path('api/user/info', views.getUserInfo),
 ]
