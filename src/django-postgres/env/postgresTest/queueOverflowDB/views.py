@@ -275,7 +275,42 @@ def devoteAnswer(request, id):
             answer.update(voters=array)
             currentVotes = answer.values('votes')[0]['votes']
             answer.update(votes=currentVotes-1)
-            return JsonResponse({"votes": currentVotes-1, "previousVotes" : currentVotes, 'voters': array}, safe=False)       
+            return JsonResponse({"votes": currentVotes-1, "previousVotes" : currentVotes, 'voters': array}, safe=False)    
+
+@api_view(['GET'])
+def getUserInfo(request):
+       if request.method == 'GET':
+        try:
+            username = getUsernameFromToken(request.headers['Authorization'])
+        except:
+            return JsonResponse({"error": "please spcify token"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        users = User.objects.filter(username=username).values()
+        listResult = [entry for entry in users]
+
+        questionsAsked = Question.objects.filter(writer=username)
+        questionResult = [entry for entry in questionsAsked.values()]
+        numberOfQuestionsAsked = questionsAsked.count()
+
+        answered = Answer.objects.filter(writer=username)
+        answeredResult = [entry for entry in answered.values()]
+        numberOfAnswered = answered.count()
+
+
+        listResult[0]["number_of_question_asked"] = numberOfQuestionsAsked
+        listResult[0]["number_of_answered"] = numberOfAnswered
+        listResult[0]["answered"] = answeredResult
+        listResult[0]["questions_asked"] = questionResult
+        return JsonResponse(listResult, safe=False)
+
+@api_view(['GET'])
+def getQuestionByAnswerId(request, answerId):
+    questionIdQuerySet = Answer.objects.filter(id=answerId).values_list("questionId")
+    questionId = [entry for entry in questionIdQuerySet][0][0]
+
+    questionQuerySet = Question.objects.get(pk=questionId)
+    question = QuestionSerializer(questionQuerySet)
+    return JsonResponse(question.data, safe=False)
 
 
         
