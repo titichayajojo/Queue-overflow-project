@@ -1,11 +1,12 @@
-from datetime import date
+from datetime import date, datetime
 import json
 from django.db import reset_queries
 from rest_framework import viewsets
-from .serializers import QuestionSerializer, TagSerializer, AnswerSerializer
+from .serializers import QuestionSerializer, TagSerializer, AnswerSerializer, ProfileImageSerializer
 from .Model.Question import Question
 from .Model.Tag import Tag
 from .Model.Answer import Answer
+from .Model.ProfileImage import ProfileImage
 from rest_framework.decorators import api_view
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
@@ -20,6 +21,7 @@ from django.db.models import Q
 
 from django.http import HttpResponse, response
 from django.views.decorators.csrf import csrf_protect
+from django.core.files.storage import FileSystemStorage
 
 @api_view(['GET', 'POST', 'DELETE'])
 def questionsList(request):
@@ -316,6 +318,30 @@ def getAllUsers(request):
             
         return JsonResponse(listResult, safe=False)
 
+@api_view(['POST'])
+def upload(request):
+    if request.method == 'POST' and request.FILES['upload']:
+        try:
+            username = getUsernameFromToken(request.headers['Authorization'])
+        except:
+            return JsonResponse({"error": "please spcify token"}, status=status.HTTP_400_BAD_REQUEST)
 
+        upload = request.FILES['upload']
+        fss = FileSystemStorage()
+        fileName = str(username)+"/"+datetime.now().strftime("%m-%d-%Y, %H:%M:%S")+".jpeg"
+        file = fss.save(fileName, upload)
+        file_url = fss.url(file)
 
-        
+        profileImage = ProfileImage.objects.filter(username=str(username))
+        if profileImage:
+            profileImage.update(url=file_url)
+            return JsonResponse({"username": str(username), "url" : file_url}, safe=False)
+
+        else:
+            profileImageSerializer = ProfileImageSerializer(data={'username': str(username), 'url':file_url})
+
+            if profileImageSerializer.is_valid():
+                profileImageSerializer.save()
+                return JsonResponse(profileImageSerializer.data, status=status.HTTP_201_CREATED) 
+            return JsonResponse(profileImageSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+

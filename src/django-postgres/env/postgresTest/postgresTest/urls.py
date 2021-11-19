@@ -19,6 +19,8 @@ from django.urls import path, include
 from queueOverflowDB import views
 from django.conf.urls import url, include
 from rest_framework.authtoken import views as rest_framework_views
+from django.conf import settings #add this
+from django.conf.urls.static import static #add this
 
 urlpatterns = [
     #question
@@ -50,6 +52,9 @@ urlpatterns = [
     path('api/user/info', views.getUserInfo),
     path('api/user/info/<str:username>/', views.getUserInfoByUsername),
     path('api/users', views.getAllUsers),
+
+    #img
+    path("upload", views.upload, name="upload")
 
 ]
 
