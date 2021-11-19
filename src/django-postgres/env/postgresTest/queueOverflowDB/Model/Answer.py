@@ -8,4 +8,4 @@ class Answer(models.Model):
     votes = models.IntegerField(default=0)
     writer = models.TextField(max_length=50, blank=False, default='')
     createdAt = models.DateTimeField(auto_now_add=True, blank=True)
-    voters = ArrayField(models.CharField(max_length=50, default=[]), default=list())
+    voters = ArrayField(models.CharField(max_length=50, default=''), default=list())
