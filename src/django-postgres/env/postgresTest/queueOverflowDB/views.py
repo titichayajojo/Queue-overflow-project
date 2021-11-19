@@ -1,8 +1,6 @@
 from datetime import date
 import json
 from django.db import reset_queries
-from django.http import response
-from django.shortcuts import render
 from rest_framework import viewsets
 from .serializers import QuestionSerializer, TagSerializer, AnswerSerializer
 from .Model.Question import Question
@@ -13,12 +11,15 @@ from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
 from rest_framework import status
 from rest_framework.renderers import JSONRenderer
-from .functions.index import calculateNDaysAgo, getUsernameFromToken
+from .functions.index import calculateNDaysAgo, getUsernameFromToken, getUserProfileByUsername
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from rest_framework.authtoken.models import Token
 from django.db.models import Q
+
+from django.http import HttpResponse, response
+from django.views.decorators.csrf import csrf_protect
 
 @api_view(['GET', 'POST', 'DELETE'])
 def questionsList(request):
@@ -284,33 +285,37 @@ def getUserInfo(request):
             username = getUsernameFromToken(request.headers['Authorization'])
         except:
             return JsonResponse({"error": "please spcify token"}, status=status.HTTP_400_BAD_REQUEST)
-        
-        users = User.objects.filter(username=username).values()
-        listResult = [entry for entry in users]
-
-        questionsAsked = Question.objects.filter(writer=username)
-        questionResult = [entry for entry in questionsAsked.values()]
-        numberOfQuestionsAsked = questionsAsked.count()
-
-        answered = Answer.objects.filter(writer=username)
-        answeredResult = [entry for entry in answered.values()]
-        numberOfAnswered = answered.count()
-
-
-        listResult[0]["number_of_question_asked"] = numberOfQuestionsAsked
-        listResult[0]["number_of_answered"] = numberOfAnswered
-        listResult[0]["answered"] = answeredResult
-        listResult[0]["questions_asked"] = questionResult
+        listResult = getUserProfileByUsername(username)
         return JsonResponse(listResult, safe=False)
 
 @api_view(['GET'])
 def getQuestionByAnswerId(request, answerId):
-    questionIdQuerySet = Answer.objects.filter(id=answerId).values_list("questionId")
-    questionId = [entry for entry in questionIdQuerySet][0][0]
+    if request.method == 'GET':
+        questionIdQuerySet = Answer.objects.filter(id=answerId).values_list("questionId")
+        questionId = [entry for entry in questionIdQuerySet][0][0]
 
-    questionQuerySet = Question.objects.get(pk=questionId)
-    question = QuestionSerializer(questionQuerySet)
-    return JsonResponse(question.data, safe=False)
+        questionQuerySet = Question.objects.get(pk=questionId)
+        question = QuestionSerializer(questionQuerySet)
+        return JsonResponse(question.data, safe=False)
+
+@api_view(['GET'])
+def getUserInfoByUsername(request, username):
+    if request.method == 'GET':
+        try:
+            listResult = getUserProfileByUsername(username)
+        except:
+            return JsonResponse({"error": "username doesn't exist"}, status=status.HTTP_400_BAD_REQUEST)
+            
+        return JsonResponse(listResult, safe=False)
+
+@api_view(['GET'])
+def getAllUsers(request):
+    if request.method == 'GET':
+        users = User.objects.all().values()
+        listResult = [entry for entry in users]
+            
+        return JsonResponse(listResult, safe=False)
+
 
 
         

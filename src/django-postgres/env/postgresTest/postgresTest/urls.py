@@ -20,7 +20,6 @@ from queueOverflowDB import views
 from django.conf.urls import url, include
 from rest_framework.authtoken import views as rest_framework_views
 
-
 urlpatterns = [
     #question
     path('api/questions', views.questionsList),
@@ -49,4 +48,8 @@ urlpatterns = [
 
     #user
     path('api/user/info', views.getUserInfo),
+    path('api/user/info/<str:username>/', views.getUserInfoByUsername),
+    path('api/users', views.getAllUsers),
+
 ]
+
