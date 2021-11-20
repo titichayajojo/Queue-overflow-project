@@ -19,4 +19,4 @@ class TagSerializer(serializers.HyperlinkedModelSerializer):
 class AnswerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Answer
-        fields = ('questionId','body', 'votes', 'writer', 'createdAt')
+        fields = ('id','questionId','body', 'votes', 'writer', 'createdAt')

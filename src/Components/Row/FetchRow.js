@@ -53,15 +53,16 @@ const AnswerButtonRow = styled.div`
   margin-right: 660px;
 `;
 
-async function postAnswer(id, body) {
+function postAnswer(id, body, setState, state) {
   var headers = { Authorization: "4ac201a63372eb50e301263ceeaacbb83c762f78" };
-  await fetch("http://127.0.0.1:8000/api/answers", {
+  fetch("http://127.0.0.1:8000/api/answers", {
     method: "POST",
     mode: "cors",
     headers: headers,
     body: JSON.stringify({ questionId: id, body: body }),
   })
     .then((res) => {
+      setState(!state);
       return res.json();
     })
     .then((jsonResponse) => {
@@ -99,7 +100,7 @@ function FetchRow(props) {
       <AnswerButtonRow>
         <BlueButton
           onClick={async () => {
-            await postAnswer(params, text);
+            postAnswer(params, text, props.setState, props.state);
           }}
         >
           Post&nbsp;Your&nbsp;Answer
