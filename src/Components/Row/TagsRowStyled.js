@@ -12,6 +12,5 @@ export const Tag = styled.span`
 
 export const TagRow = styled.div`
   padding: 10px;
-  text-align: center;
-  margin-right: 210px;
+  width: 65%;
 `;

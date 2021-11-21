@@ -1,5 +1,9 @@
 from django.contrib import admin
-from .models import Teacher
+from .Model.Question import Question
+from .Model.Tag import Tag
+from .Model.Answer import Answer
 
 # Register your models here.
-admin.site.register(Teacher)
+admin.site.register(Question)
+admin.site.register(Tag)
+admin.site.register(Answer)

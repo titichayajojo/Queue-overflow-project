@@ -1,23 +1,36 @@
 import { Reset } from "styled-reset";
 import GlobalStyles from "./style/GlobalStyle";
-import { Route, Switch, Redirect, Link, BrowserRouter as Router} from "react-router-dom";
+import {
+  Route,
+  Switch,
+  Redirect,
+  Link,
+  BrowserRouter as Router,
+} from "react-router-dom";
 import LoginPage from "./Screens/LoginPage";
 import HomePage from "./Screens/HomePage";
-import ViewQuestionPage from "./Screens/ViewQuestionPage"
+import UserPage from "./Screens/UserPage";
 import QuestionPage from "./QuestionPage";
+import TagsPage from "./Screens/TagsPage";
+import Header from "../src/Components/Header/Header";
+import SignUp from "../src/Screens/SignUp";
+
+import ViewQuestionPage from "./Screens/ViewQuestionPage";
+
 import AskPage from "./Screens/AskPage";
-
-
 
 function App() {
   const routes = (
     <Switch>
-      <Route exact path="/LoginPage" component={LoginPage} />
-      <Route exact path="/" component={HomePage} />
-      <Route exact path="/AskPage" component={AskPage}/>
-      {/* <Route exact path="/ViewQuestionPage" component={ViewQuestionPage} /> */}
-      <Route exact path="/ViewQuestionPage/:item" component={ViewQuestionPage} />
-      <Redirect to="/" />
+      <Route path="/LoginPage" component={LoginPage} />
+      <Route path="/SignUp" component={SignUp} />
+      <Route path="/Questions" component={QuestionPage} />
+      <Route path="/Tags" component={TagsPage} />
+      <Route path="/AskPage" component={AskPage} />
+      <Route path="/ViewQuestionPage/:item" component={ViewQuestionPage} />
+      <Route path="/" component={HomePage} />
+
+      {/* <Redirect to="/" /> */}
     </Switch>
   );
 
@@ -25,6 +38,7 @@ function App() {
     <div>
       <Reset />
       <GlobalStyles />
+      <Header />
       <div>{routes}</div>
     </div>
   );

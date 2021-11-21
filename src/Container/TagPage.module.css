@@ -1,0 +1,33 @@
+
+article {
+    max-width: 500px;
+  }
+  
+  article p {
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+  }
+
+  .column{
+    display: flex;
+    flex-direction: column;
+}
+.row{
+    display:flex;
+    flex-direction: row;
+}
+
+.heading1{
+    font-size: 36px;
+
+}
+.heading2{
+    font-size:20px;
+}
+
+.tagName{
+  font-size:20px;
+  color: #39739D
+}
