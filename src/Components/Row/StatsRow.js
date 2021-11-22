@@ -5,6 +5,7 @@ import { Votes, ArrowsRow } from "./StatsRowStyled";
 
 async function vote(des, id) {
   var votes = Number(document.getElementById("voteId").innerHTML);
+  console.log("vote = ", votes);
   var headers = { Authorization: "4ac201a63372eb50e301263ceeaacbb83c762f78" };
   await fetch("http://127.0.0.1:8000/api/" + des + "/vote/" + id + "/", {
     method: "PUT",
@@ -18,6 +19,7 @@ async function vote(des, id) {
       if (jsonResponse.error == null) {
         votes += 1;
         document.getElementById("voteId").innerHTML = votes;
+        console.log("vote!");
       }
     })
     .catch((error) => console.error(error, error.stack));
@@ -47,8 +49,7 @@ function StatsRow(props) {
   const votes = props.data.votes;
   var key = props.data.id;
   var des = "question";
-  if (key == null) {
-    key = props.data.questionId;
+  if (props.data.questionId != null) {
     des = "answer";
   }
   return (

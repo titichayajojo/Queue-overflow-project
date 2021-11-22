@@ -26,3 +26,4 @@ class ProfileImageSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ProfileImage
         fields = ('id','username','url', 'createdAt')
+
