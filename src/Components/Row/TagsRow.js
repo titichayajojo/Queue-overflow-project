@@ -1,13 +1,14 @@
 import { TagRow, Tag } from "./TagsRowStyled";
 
-function TagsRow(props) {
-  const tags = props.value.tags;
+function TagsRow() {
   return (
     <TagRow>
-      {tags &&
-            tags.map((tag, index) => {
-              return <Tag key={index}>{tag}</Tag>;
-        })}
+      <Tag>java</Tag>
+      <Tag>react.js</Tag>
+      <Tag>jest.js</Tag>
+      <Tag>react-hooks</Tag>
+      <Tag>enzyme</Tag>
+      <Tag>use-effect</Tag>
     </TagRow>
   );
 }

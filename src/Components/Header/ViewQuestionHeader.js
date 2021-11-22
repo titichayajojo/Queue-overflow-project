@@ -8,27 +8,25 @@ import {
   Question,
 } from "./ViewQuestionHeaderStyle";
 
-function ViewQuestionHeader(props) {
-  const {title, askedDate, views} = props.value
-
+function ViewQuestionHeader() {
   return (
     <ViewQuestionHeaderRow>
       <Question>
-        <StyledHeader>{title}</StyledHeader>
+        <StyledHeader>Testing of useEffect hook with try/catch</StyledHeader>
         <BlueButton>Ask&nbsp;Question</BlueButton>
       </Question>
       <StyledQuestionRow>
         <QuestionStats>
           Asked
-          <span>{askedDate}</span>
+          <span>1 year ago</span>
         </QuestionStats>
         <QuestionStats>
           Active
-          <span> {askedDate}</span>
+          <span> 1 year ago</span>
         </QuestionStats>
         <QuestionStats>
           Viewed
-          <span>{views}</span>
+          <span>6k times</span>
         </QuestionStats>
       </StyledQuestionRow>
       <Border />
