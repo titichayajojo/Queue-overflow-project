@@ -14,39 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.contrib.auth.models import PermissionManager
 from django.urls import path, include
 from queueOverflowDB import views
 from django.conf.urls import url, include
-from rest_framework.authtoken import views as rest_framework_views
 
 
 urlpatterns = [
-    #question
-    path('api/questions', views.questionsList),
-    path('api/question/<int:id>/', views.questionDetail),
-    path('api/question/<str:keyword>/', views.searchQuestion),
-    path('api/question/vote/<int:id>/', views.voteQuestion),
-    path('api/question/devote/<int:id>/', views.devoteQuestion),
-
-    #tag
-    path('api/tags', views.tagList),
-    path('api/tag/<str:title>/', views.tagDetail),
-
-    #answer
-    path('api/answers', views.answerList),
-    path('api/answer/<int:questionId>', views.answerDetail),
-    path('api/answer/vote/<int:id>/', views.voteAnswer),
-    path('api/answer/devote/<int:id>/', views.devoteAnswer),
-    path('api/answer/question/<int:answerId>', views.getQuestionByAnswerId),
-
-    #register
-    path('api/register', views.register),
-
-    #login
-    path('api/login', views.login, name='api-token-auth'),
-    url(r'^get_auth_token/$', rest_framework_views.obtain_auth_token, name='get_auth_token'),
-
-    #user
-    path('api/user/info', views.getUserInfo),
+    url(r'teachers', views.getAllTeachers),
+    url(r'api/questions', views.questions_list)
 ]
