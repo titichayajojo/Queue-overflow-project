@@ -4,6 +4,7 @@ from rest_framework import serializers
 from .Model.Question import Question
 from .Model.Tag import Tag
 from .Model.Answer import Answer
+from .Model.ProfileImage import ProfileImage
 
 class QuestionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -14,9 +15,15 @@ class QuestionSerializer(serializers.HyperlinkedModelSerializer):
 class TagSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Tag
-        fields = ('title', 'description', 'Asked', 'createdAt')
+        fields = ('id','title', 'description', 'Asked', 'createdAt')
 
 class AnswerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Answer
-        fields = ('questionId','body', 'votes', 'writer', 'createdAt')
+        fields = ('id','questionId','body', 'votes', 'writer', 'createdAt')
+
+class ProfileImageSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = ProfileImage
+        fields = ('id','username','url', 'createdAt')
+
