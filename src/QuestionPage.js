@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import TagPage from "../src/Container/TagPage";
-import QuestionRow from "./QuestionRow";
+import UserPage from "./Screens/UserPage";
+import QuestionRow from "./Components/Row/QuestionRow";
 import { useEffect, useState } from "react";
 import TabBar from "../src/Components/Button/TabBar";
 import classes from "./QuestionPage.module.css";
@@ -48,11 +49,33 @@ function QuestionPage() {
   const search = queryParams.get("input");
   const [tags, setTags] = useState(null);
 
+  let [user, setUser] = useState(null);
+  useEffect(() => {
+    var headers = { Authorization: "4ac201a63372eb50e301263ceeaacbb83c762f78" };
+    fetch("http://127.0.0.1:8000/api/user/info", {
+      method: "GET",
+      mode: "cors",
+      headers: headers,
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((jsonResponse) => {
+        console.log(jsonResponse);
+        setUser(jsonResponse);
+
+        setLoading(false);
+      });
+  }, []);
+
   const SubPage = () => {
-    console.log("search", data);
     switch (curButton) {
       case "Tags":
         return <TagPage tags={tags} />;
+      case "Users":
+        return <UserPage data={user} />;
       default:
         return <div />;
     }

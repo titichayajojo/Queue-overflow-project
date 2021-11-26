@@ -28,6 +28,7 @@ function App() {
       <Route path="/Tags" component={TagsPage} />
       <Route path="/AskPage" component={AskPage} />
       <Route path="/ViewQuestionPage/:item" component={ViewQuestionPage} />
+      <Route path="/User" component={UserPage} />
       <Route path="/" component={HomePage} />
 
       {/* <Redirect to="/" /> */}
