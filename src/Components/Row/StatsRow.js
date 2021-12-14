@@ -2,11 +2,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSortUp } from "@fortawesome/free-solid-svg-icons";
 import { faSortDown } from "@fortawesome/free-solid-svg-icons";
 import { Votes, ArrowsRow } from "./StatsRowStyled";
+import { useSelector } from "react-redux";
 
-async function vote(des, id) {
+async function vote(des, id, token) {
   var votes = Number(document.getElementById("voteId").innerHTML);
   console.log("vote = ", votes);
-  var headers = { Authorization: "4ac201a63372eb50e301263ceeaacbb83c762f78" };
+  var headers = { Authorization: token };
   await fetch("http://127.0.0.1:8000/api/" + des + "/vote/" + id + "/", {
     method: "PUT",
     mode: "cors",
@@ -25,9 +26,9 @@ async function vote(des, id) {
     .catch((error) => console.error(error, error.stack));
 }
 
-async function devote(des, id) {
+async function devote(des, id, token) {
   var votes = Number(document.getElementById("voteId").innerHTML);
-  var headers = { Authorization: "4ac201a63372eb50e301263ceeaacbb83c762f78" };
+  var headers = { Authorization: token };
   await fetch("http://127.0.0.1:8000/api/" + des + "/devote/" + id + "/", {
     method: "PUT",
     mode: "cors",
@@ -46,6 +47,7 @@ async function devote(des, id) {
 }
 
 function StatsRow(props) {
+  const counter = useSelector((state) => state.counter.token);
   const votes = props.data.votes;
   var key = props.data.id;
   var des = "question";
@@ -59,7 +61,7 @@ function StatsRow(props) {
         size="4x"
         color="grey"
         onClick={async () => {
-          await vote(des, key);
+          await vote(des, key, counter);
         }}
       />
       <Votes id="voteId">{votes}</Votes>
@@ -68,7 +70,7 @@ function StatsRow(props) {
         size="4x"
         color="grey"
         onClick={async () => {
-          await devote(des, key);
+          await devote(des, key, counter);
         }}
       />
     </ArrowsRow>
