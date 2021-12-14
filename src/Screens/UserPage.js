@@ -9,10 +9,10 @@ const UserPage = (props) => {
   var data = props.data;
   return (
     <div className="profile-head">
-      {data != null && <FontAwesomeIcon icon={faUser} size="5x" />}
       {data != null && (
         <div className="profile-info">
           <div className="profile-name">
+            {data != null && <FontAwesomeIcon icon={faUser} size="3x" />} &nbsp;
             {data[0].first_name} &nbsp;
             {data[0].last_name}
           </div>

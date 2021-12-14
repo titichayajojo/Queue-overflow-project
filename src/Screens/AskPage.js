@@ -5,6 +5,7 @@ import { convertFromRaw, convertToRaw } from "draft-js";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
   padding: 30px 20px;
@@ -62,9 +63,9 @@ const QuestionBodyText = styled.textarea`
   margin-bottom: 20px;
 `;
 
-async function postQuestion(body, tags) {
+async function postQuestion(body, tags, token) {
   var title = document.getElementById("inTitle").value;
-  var headers = { Authorization: "4ac201a63372eb50e301263ceeaacbb83c762f78" };
+  var headers = { Authorization: token };
   await fetch("http://127.0.0.1:8000/api/questions", {
     method: "POST",
     mode: "cors",
@@ -81,6 +82,7 @@ async function postQuestion(body, tags) {
 }
 
 function AskPage() {
+  const counter = useSelector((state) => state.counter.token);
   const [text, setText] = useState(null);
   const [selectedTags, setSelectedTags] = useState(null);
 
@@ -112,7 +114,7 @@ function AskPage() {
         <TagsInput setSelectedTags={setSelectedTags}></TagsInput>
         <BlueButton
           onClick={async () => {
-            await postQuestion(text, selectedTags);
+            await postQuestion(text, selectedTags, counter);
           }}
         >
           Post your question

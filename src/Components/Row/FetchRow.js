@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import { useSelector } from "react-redux";
 import { BlueButton } from "../Header/ViewQuestionHeaderStyle";
 import ViewQuestionHeader from "../Header/ViewQuestionHeader";
 import VoteRow from "../Row/VoteRow";
@@ -53,8 +53,8 @@ const AnswerButtonRow = styled.div`
   margin-right: 660px;
 `;
 
-function postAnswer(id, body, setState, state) {
-  var headers = { Authorization: "4ac201a63372eb50e301263ceeaacbb83c762f78" };
+function postAnswer(id, body, setState, state, token) {
+  var headers = { Authorization: token };
   fetch("http://127.0.0.1:8000/api/answers", {
     method: "POST",
     mode: "cors",
@@ -71,9 +71,9 @@ function postAnswer(id, body, setState, state) {
 }
 
 function FetchRow(props) {
+  const counter = useSelector((state) => state.counter.token);
   const [text, setText] = useState(null);
   const params = props.params;
-
   return (
     <div>
       <ViewQuestionHeader value={props.value} />
@@ -100,7 +100,7 @@ function FetchRow(props) {
       <AnswerButtonRow>
         <BlueButton
           onClick={async () => {
-            postAnswer(params, text, props.setState, props.state);
+            postAnswer(params, text, props.setState, props.state, counter);
           }}
         >
           Post&nbsp;Your&nbsp;Answer

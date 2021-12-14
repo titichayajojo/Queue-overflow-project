@@ -78,7 +78,8 @@ function QuestionRow(props) {
       <QuestionTitleArea>
         <QuestionLink to={"/ViewQuestionPage/" + id}>{title}</QuestionLink>
         <WhoAndWhen>
-          {nDaysAgo} <UserLink to={"/feature?choice=Users"}>{writer}</UserLink>
+          {nDaysAgo}{" "}
+          <UserLink to={"/OtherUserPage/" + writer}>{writer}</UserLink>
         </WhoAndWhen>
         {tags.map((tag, index) => {
           return <Tag key={index}>{tag}</Tag>;
