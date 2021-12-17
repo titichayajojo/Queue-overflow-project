@@ -9,8 +9,10 @@ import TextField from "@mui/material/TextField";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import { useEffect, useState } from "react";
+import { SearchInput } from "../Components/Input/Inputs";
 const TagPage = (props) => {
   const [items, setitems] = useState(props.tags);
   const [text, setText] = useState("");
@@ -32,7 +34,7 @@ const TagPage = (props) => {
     <div className={classes.column} style={{ marginLeft: 10, marginTop: 100 }}>
       <div
         className={classes.heading1}
-        style={{ fontFamily: "inherit", fontWeight: "bold" }}
+        style={{ fontFamily: "inherit", fontWeight: "bold", color: "#C1C1C2" }}
       >
         Tags
       </div>
@@ -42,13 +44,10 @@ const TagPage = (props) => {
           style={{ marginTop: 20, fontFamily: "inherit" }}
           className={classes.heading2}
         >
-          <p>
+          <p style={{ color: "#C1C1C2" }}>
             A tag is a keyword or label that categorizes your question with
             other, similar questions. Using the right tags makes it easier for
             others to find and answer your question.
-          </p>
-          <p style={{ marginTop: 20, color: "#009FD5" }}>
-            Show all tag synonyms
           </p>
         </article>
         <div
@@ -59,16 +58,21 @@ const TagPage = (props) => {
             marginTop: 10,
           }}
         >
-          <TextField
-            style={{ backgroundColor: "white", borderRadius: 20, width: 400 }}
-            id="outlined-multiline-flexible"
-            placeholder="Filter by tags"
-            value={text}
+          <SearchInput
             onChange={(chunk) => {
               setText(chunk.target.value);
             }}
-          />
-          <ToggleButtonGroup
+            value={text}
+            type="text"
+            placeholder="Filter by tags"
+            style={{
+              backgroundColor: "white",
+              width: 500,
+              height: 35,
+              borderRadius: 10,
+            }}
+          ></SearchInput>
+          {/* <ToggleButtonGroup
             color="primary"
             style={{ backgroundColor: "white", marginRight: 50 }}
             exclusive
@@ -76,7 +80,7 @@ const TagPage = (props) => {
             <ToggleButton value="web">Popular</ToggleButton>
             <ToggleButton value="android">Name</ToggleButton>
             <ToggleButton value="ios">New</ToggleButton>
-          </ToggleButtonGroup>
+          </ToggleButtonGroup> */}
         </div>
         <Grid
           container
@@ -105,7 +109,7 @@ const TagPage = (props) => {
                   >
                     <div
                       style={{
-                        backgroundColor: "#E1ECF4",
+                        backgroundColor: "#3E4A52",
                         position: "absolute",
                         paddingTop: 5,
                         paddingBottom: 5,
@@ -116,7 +120,15 @@ const TagPage = (props) => {
                         left: 20,
                       }}
                     >
-                      <div className={classes.tagName}>{item.title}</div>
+                      <Link to={`/?choice=Questions&input=${item.title}`}>
+                        <div
+                          onclick={() => {}}
+                          className={classes.tagName}
+                          style={{ color: "#9CC3DB", cursor: "pointer" }}
+                        >
+                          {item.title}
+                        </div>
+                      </Link>
                     </div>
                     <article
                       lang="en"
@@ -126,7 +138,7 @@ const TagPage = (props) => {
                         padding: 25,
                       }}
                     >
-                      <p style={{ color: "white" }}>{item.description}</p>
+                      <p style={{ color: "#C1C1C2" }}>{item.description}</p>
                     </article>
                   </div>
                 </Grid>

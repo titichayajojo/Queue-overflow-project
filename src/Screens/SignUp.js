@@ -16,7 +16,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { css } from "@emotion/react";
 import { useSelector, useDispatch } from "react-redux";
 //Register case
-
+import { useHistory } from "react-router-dom";
 const features = [
   {
     titile: "Get unstuck — ask a question",
@@ -54,7 +54,8 @@ const buttons = [
 ];
 
 const SignUp = (props) => {
-  const [firstName, setFirstName] = useState("test");
+  let history = useHistory();
+  const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [userName, setUserName] = useState("");
@@ -85,6 +86,7 @@ const SignUp = (props) => {
         setLoading(false);
         if (jsonResponse) {
           alert("Register successfully");
+          history.push("/LoginPage");
         } else {
           alert("please check your email and password and try again or plesae");
         }
@@ -96,7 +98,7 @@ const SignUp = (props) => {
       <div className={classes.leftMain}>
         <div style={{ marginTop: 400 }}>
           <div style={{ fontSize: 30 }} className={classes.font}>
-            Join the Stack Overflow community
+            Join the Queue Overflow community
           </div>
           {features.map((item) => {
             return (
@@ -120,7 +122,7 @@ const SignUp = (props) => {
           className={classes.font}
         >
           Collaborate and share knowledge with a private group for FREE. Get
-          Stack Overflow for Teams free for up to 50 users.
+          Queue Overflow for Teams free for up to 50 users.
         </div>
       </div>
       <div className={classes.rightMain}>
