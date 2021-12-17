@@ -16,9 +16,9 @@ function ProfileRow(props) {
       require("../../django-postgres/env/postgresTest/media/no_profile_pic.png").default;
     try {
       pic = require("../../django-postgres/env/postgresTest/media/" +
-        writer +
+        props.value.writer +
         "/" +
-        writer +
+        props.value.writer +
         ".jpeg").default;
     } catch (err) {
       console.log(err);
