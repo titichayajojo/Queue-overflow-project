@@ -56,7 +56,7 @@ const ColorButton = styled(Button)(({ theme }) => ({
 
 function Header() {
   const history = useHistory();
-  const [search, setSearch] = useState("boon");
+  const [search, setSearch] = useState("");
 
   const searchHandler = (text) => {
     history.push({
@@ -90,8 +90,8 @@ function Header() {
           placeholder="Search..."
           style={{
             backgroundColor: "white",
-            margin: 0,
-            height: 45,
+
+            height: 35,
             borderRadius: 10,
           }}
         ></SearchInput>
@@ -101,7 +101,8 @@ function Header() {
           }}
           variant="contained"
           style={{
-            height: 45,
+            marginTop: 8,
+            height: 35,
             marginLeft: 5,
             borderRadius: 10,
             backgroundColor: "#378AD3",
@@ -111,7 +112,9 @@ function Header() {
         </ColorButton>
       </div>
 
-      <ProfileLink to="/LoginPage">Login</ProfileLink>
+      <ProfileLink to="/LoginPage" style={{ marginTop: 8 }}>
+        Login
+      </ProfileLink>
     </StyledHeader>
   );
 }

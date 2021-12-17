@@ -151,13 +151,13 @@ function QuestionPage() {
         <div className={classes.menubar}>
           <div
             className={classes.heading1}
-            style={{ marginTop: 40, marginLeft: 40 }}
+            style={{ marginTop: 40, marginLeft: 40, color: "#C1C1C2" }}
           >
             Home
           </div>
           <div
             className={classes.heading1}
-            style={{ marginTop: 40, marginLeft: 40 }}
+            style={{ marginTop: 40, marginLeft: 40, color: "#C1C1C2" }}
           >
             PUBLIC
           </div>
@@ -172,7 +172,7 @@ function QuestionPage() {
               style={{ margin: 10 }}
             />
             <div className={classes.heading1} style={{}}>
-              Stack Overflow
+              Queue Overflow
             </div>
           </div>
 
