@@ -1,0 +1,38 @@
+.profile-head {
+  margin-top: 100px;
+}
+.profile-name {
+  margin-left: 10px;
+  font-size: x-large;
+}
+
+.profile-stat {
+  margin-left: 10px;
+  color: rgb(193, 193, 194);
+  font-size: small;
+  margin-top: 10px;
+  margin-bottom: 60px;
+}
+
+.profile-questions {
+  color: #3ca4ff;
+  margin-left: 5px;
+  margin-bottom: 10px;
+}
+
+.no-user {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: x-large;
+  color: "#C1C1C2";
+}
+
+.no-user-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 200px;
+}

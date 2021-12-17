@@ -8,6 +8,7 @@ article {
     -moz-hyphens: auto;
     -ms-hyphens: auto;
     hyphens: auto;
+    margin-left: 10px;
   }
 
   .column{
@@ -20,6 +21,7 @@ article {
 }
 
 .heading1{
+  margin-left: 5px;
     font-size: 36px;
 
 }

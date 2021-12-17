@@ -17,7 +17,10 @@ export const Border = styled.div`
 `;
 
 function ViewQuestionPage(props) {
+  console.log("ViewQuestion Called");
   const [loading, setLoading] = useState(true);
+  const [newAnswer, setAnswer] = useState(false);
+  const [votes, setVotes] = useState(false);
   let params = useParams();
   let [data, setData] = useState(null);
   let [updateData, setUpdatedData] = useState(null);
@@ -28,37 +31,39 @@ function ViewQuestionPage(props) {
   };
   const fetchData = useCallback(async () => {
     var headers = {};
-    fetch("http://127.0.0.1:8000/api/question/" + params.item, {
-      method: "GET",
-      mode: "cors",
-      headers: headers,
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
+    if (!newAnswer) {
+      fetch("http://127.0.0.1:8000/api/question/" + params.item, {
+        method: "GET",
+        mode: "cors",
+        headers: headers,
       })
-      .then((jsonResponse) => {
-        console.log(jsonResponse);
-        setData(jsonResponse);
-      })
-      .catch((error) => console.error(error, error.stack));
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          }
+        })
+        .then((jsonResponse) => {
+          console.log(jsonResponse);
+          setData(jsonResponse);
+        })
+        .catch((error) => console.error(error, error.stack));
 
-    fetch("http://127.0.0.1:8000/api/question/" + params.item + "/", {
-      method: "PUT",
-      mode: "cors",
-      headers: headers,
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
+      fetch("http://127.0.0.1:8000/api/question/" + params.item + "/", {
+        method: "PUT",
+        mode: "cors",
+        headers: headers,
       })
-      .then((jsonResponse) => {
-        console.log(jsonResponse);
-        setUpdatedData(jsonResponse);
-      })
-      .catch((error) => console.error(error, error.stack));
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          }
+        })
+        .then((jsonResponse) => {
+          console.log(jsonResponse);
+          setUpdatedData(jsonResponse);
+        })
+        .catch((error) => console.error(error, error.stack));
+    }
 
     fetch("http://127.0.0.1:8000/api/answer/" + params.item, {
       method: "GET",
@@ -74,7 +79,7 @@ function ViewQuestionPage(props) {
         setData2(jsonResponse);
       })
       .catch((error) => console.error(error, error.stack));
-  }, []);
+  }, [newAnswer, votes]);
 
   useEffect(async () => {
     fetchData().then(() => {});
@@ -85,6 +90,7 @@ function ViewQuestionPage(props) {
       finishLoading();
     }
   }, [data, updateData, data2]);
+  console.log("data = ", data);
   return (
     <div>
       <Loader
@@ -111,6 +117,10 @@ function ViewQuestionPage(props) {
                 value={element}
                 params={params.item}
                 data={data2}
+                state={newAnswer}
+                setState={setAnswer}
+                state2={votes}
+                setState2={setVotes}
               />
             );
           })}

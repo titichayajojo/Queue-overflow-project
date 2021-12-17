@@ -11,6 +11,7 @@ import { counterActions } from "../store";
 import { useState, useEffect } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import { css } from "@emotion/react";
+import { useHistory } from "react-router-dom";
 const buttons = [
   {
     name: "Log in with Google",
@@ -33,6 +34,7 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  let history = useHistory();
 
   const loginHandler = (props) => {
     var headers = {};
@@ -54,7 +56,9 @@ function LoginPage() {
         if (jsonResponse != null) {
           setLoading(false);
           alert("Login successful");
+          history.push("/home");
           dispatch(counterActions.setToken(jsonResponse.token));
+          dispatch(counterActions.setUserName(jsonResponse.username));
         } else {
           setLoading(false);
           alert("please check your email and password and try again");
@@ -81,7 +85,7 @@ function LoginPage() {
 
           <div className={classes.inputBox}>
             <TextInput
-              title={"Email"}
+              title={"Username"}
               value={userName}
               setValue={setUserName}
             />

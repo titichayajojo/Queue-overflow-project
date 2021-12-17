@@ -125,8 +125,12 @@ def answerList(request):
             
         answerData = JSONParser().parse(request)
         answerData['writer'] = str(username)
+        questionId = answerData['questionId']
         answerSerializer = AnswerSerializer(data=answerData)
         if answerSerializer.is_valid():
+            question = Question.objects.filter(id=questionId)
+            currentAnswer = question.values('answers')[0]['answers']
+            question.update(answers=currentAnswer+1)
             answerSerializer.save()
             return JsonResponse(answerSerializer.data, status=status.HTTP_201_CREATED) 
         return JsonResponse(answerSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -137,7 +141,7 @@ def answerDetail(request, questionId):
     # get answer by questionId
     if request.method == 'GET':
         try:
-            answers = Answer.objects.filter(questionId=questionId)
+            answers = Answer.objects.filter(questionId=questionId).order_by('createdAt')
             answerSerializer = AnswerSerializer(answers, many=True) 
             return JsonResponse(answerSerializer.data, safe=False)
         except:
@@ -327,9 +331,9 @@ def upload(request):
             return JsonResponse({"error": "please spcify token"}, status=status.HTTP_400_BAD_REQUEST)
 
         upload = request.FILES['upload']
-        fss = FileSystemStorage()
-        fileName = str(username)+"/"+datetime.now().strftime("%m-%d-%Y, %H:%M:%S")+".jpeg"
-        file = fss.save(fileName, upload)
+        fss = FileSystemStorage(location="media")
+        fileName = str(username)+".jpeg"
+        file = fss.save(str(username) + "/" + fileName, upload)
         file_url = fss.url(file)
 
         profileImage = ProfileImage.objects.filter(username=str(username))

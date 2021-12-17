@@ -2,15 +2,17 @@ import styled from "styled-components";
 import RichTextEditor from "../Components/Input/RichTextEditor";
 import TagsInput from "../Components/Input/TagsInput";
 import { convertFromRaw, convertToRaw } from "draft-js";
-import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
+import { Link, useHistory, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Button from "@mui/material/Button";
 
 const Container = styled.div`
   padding: 30px 20px;
 `;
 
-const BlueButton = styled.button`
+const BlueButton = styled(Button)`
   font-size: 1rem;
   background-color: #378ad3;
   color: #fff;
@@ -62,9 +64,9 @@ const QuestionBodyText = styled.textarea`
   margin-bottom: 20px;
 `;
 
-async function postQuestion(body, tags) {
+async function postQuestion(body, tags, token, history) {
   var title = document.getElementById("inTitle").value;
-  var headers = { Authorization: "4ac201a63372eb50e301263ceeaacbb83c762f78" };
+  var headers = { Authorization: token };
   await fetch("http://127.0.0.1:8000/api/questions", {
     method: "POST",
     mode: "cors",
@@ -76,11 +78,13 @@ async function postQuestion(body, tags) {
     })
     .then((jsonResponse) => {
       console.log(jsonResponse);
-      window.location.replace("/HomePage");
+      history.push("/HomePage");
     });
 }
 
 function AskPage() {
+  const history = useHistory();
+  const counter = useSelector((state) => state.counter.token);
   const [text, setText] = useState(null);
   const [selectedTags, setSelectedTags] = useState(null);
 
@@ -104,7 +108,6 @@ function AskPage() {
           Include all the information someone would need to answer your question
         </TipLabel>
         <RichTextEditor setText={setText}></RichTextEditor>
-        <BlueButton>Upload image</BlueButton>
         <StyledHeader2>Tags</StyledHeader2>
         <TipLabel>
           Add up to 5 tags to describe what your question is about
@@ -112,7 +115,15 @@ function AskPage() {
         <TagsInput setSelectedTags={setSelectedTags}></TagsInput>
         <BlueButton
           onClick={async () => {
-            await postQuestion(text, selectedTags);
+            await postQuestion(text, selectedTags, counter, history);
+          }}
+          variant="contained"
+          style={{
+            height: 45,
+            marginLeft: 5,
+            borderRadius: 10,
+            marginTop: 10,
+            backgroundColor: "#378AD3",
           }}
         >
           Post your question

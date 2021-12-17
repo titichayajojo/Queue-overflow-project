@@ -1,13 +1,15 @@
 import styled from "styled-components";
-
+import { useSelector } from "react-redux";
 import { BlueButton } from "../Header/ViewQuestionHeaderStyle";
 import ViewQuestionHeader from "../Header/ViewQuestionHeader";
 import VoteRow from "../Row/VoteRow";
+import AnswersRow from "../Row/AnswersRow";
 import TagsRow from "../Row/TagsRow";
 import ProfileRow from "../Row/ProfileRow";
-import AnswersRow from "../Row/AnswersRow";
 import { useEffect, useState } from "react";
 import RichTextEditor from "../Input/RichTextEditor";
+import { Link, useHistory, useLocation } from "react-router-dom";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const TotalAnswers = styled.div`
   display: grid;
@@ -53,30 +55,42 @@ const AnswerButtonRow = styled.div`
   margin-right: 660px;
 `;
 
-async function postAnswer(id, body) {
-  var headers = { Authorization: "4ac201a63372eb50e301263ceeaacbb83c762f78" };
-  await fetch("http://127.0.0.1:8000/api/answers", {
-    method: "POST",
-    mode: "cors",
-    headers: headers,
-    body: JSON.stringify({ questionId: id, body: body }),
-  })
-    .then((res) => {
-      return res.json();
-    })
-    .then((jsonResponse) => {
-      console.log(jsonResponse);
-    });
-}
-
 function FetchRow(props) {
+  const history = useHistory();
+  const counter = useSelector((state) => state.counter.token);
   const [text, setText] = useState(null);
+  const [loading, setLoading] = useState(false);
   const params = props.params;
 
+  function postAnswer(id, body, setState, state, token) {
+    if (token == "") {
+      history.push("/LoginPage");
+    } else {
+      var headers = { Authorization: token };
+      fetch("http://127.0.0.1:8000/api/answers", {
+        method: "POST",
+        mode: "cors",
+        headers: headers,
+        body: JSON.stringify({ questionId: id, body: body }),
+      })
+        .then((res) => {
+          setState(!state);
+          setLoading(false);
+          return res.json();
+        })
+        .then((jsonResponse) => {
+          console.log(jsonResponse);
+        });
+    }
+  }
   return (
     <div>
       <ViewQuestionHeader value={props.value} />
-      <VoteRow value={props.value} />
+      <VoteRow
+        value={props.value}
+        state={props.state2}
+        setState={props.setState2}
+      />
       <div
         style={{
           display: "flex",
@@ -89,7 +103,14 @@ function FetchRow(props) {
       <ProfileRow value={props.value} />
       <TotalAnswers>{Object.keys(props.data).length} Answers</TotalAnswers>
       {props.data.map((element, index) => {
-        return <AnswersRow key={element.id} value={element} />;
+        return (
+          <AnswersRow
+            key={element.id}
+            value={element}
+            state={props.state2}
+            setState={props.setState2}
+          />
+        );
       })}
 
       <YourAnswer>Your Answer</YourAnswer>
@@ -99,11 +120,23 @@ function FetchRow(props) {
       <AnswerButtonRow>
         <BlueButton
           onClick={async () => {
-            await postAnswer(params, text);
+            setLoading(true);
+            postAnswer(params, text, props.setState, props.state, counter);
+          }}
+          variant="contained"
+          style={{
+            height: 45,
+            marginLeft: 5,
+            borderRadius: 10,
+            marginTop: 30,
+            backgroundColor: "#378AD3",
           }}
         >
           Post&nbsp;Your&nbsp;Answer
         </BlueButton>
+        <div style={{ marginTop: 20 }}>
+          <ClipLoader color={"#0A95FF"} loading={loading} size={50} />
+        </div>
       </AnswerButtonRow>
     </div>
   );

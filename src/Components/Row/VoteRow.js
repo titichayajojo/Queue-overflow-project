@@ -10,7 +10,11 @@ function VoteRow(props) {
 
     return (
       <VotesRow>
-        <StatsRow data={props.value} />
+        <StatsRow
+          data={props.value}
+          state={props.state}
+          setState={props.setState}
+        />
         <span>
           <Editor editorState={editorState} readOnly={true}></Editor>
         </span>
