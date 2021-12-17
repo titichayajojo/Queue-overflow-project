@@ -2,6 +2,7 @@ import styled from "styled-components";
 import TagPage from "../src/Container/TagPage";
 import UserPage from "./Screens/UserPage";
 import QuestionRow from "./Components/Row/QuestionRow";
+import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 import TabBar from "../src/Components/Button/TabBar";
 import classes from "./QuestionPage.module.css";
@@ -28,7 +29,7 @@ const HeaderRow = styled.div`
   padding: 30px 20px;
 `;
 
-const BlueButton = styled(Link)`
+const BlueButton = styled(Button)`
   background-color: #378ad3;
   color: #fff;
   border: 0;
@@ -52,6 +53,13 @@ function QuestionPage() {
   const counter = useSelector((state) => state.counter.token);
 
   let [user, setUser] = useState(null);
+  const askQuestion = () => {
+    if (counter == "") {
+      history.push("/LoginPage");
+    } else {
+      history.push("/AskPage");
+    }
+  };
   useEffect(() => {
     var headers = { Authorization: counter };
     fetch("http://127.0.0.1:8000/api/user/info", {
@@ -190,7 +198,19 @@ function QuestionPage() {
           {data != null && curButton === "Questions" && (
             <HeaderRow>
               <StyledHeader>Top Questions</StyledHeader>
-              <BlueButton to={"/AskPage"}>Ask&nbsp;Question</BlueButton>
+              <BlueButton
+                onClick={askQuestion}
+                variant="contained"
+                style={{
+                  height: 45,
+                  marginLeft: 5,
+                  borderRadius: 10,
+                  marginTop: 30,
+                  backgroundColor: "#378AD3",
+                }}
+              >
+                Ask&nbsp;Question
+              </BlueButton>
             </HeaderRow>
           )}
           <div style={{}}>

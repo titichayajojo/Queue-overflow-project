@@ -6,12 +6,13 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
+import Button from "@mui/material/Button";
 
 const Container = styled.div`
   padding: 30px 20px;
 `;
 
-const BlueButton = styled.button`
+const BlueButton = styled(Button)`
   font-size: 1rem;
   background-color: #378ad3;
   color: #fff;
@@ -106,7 +107,19 @@ function AskPage() {
           Include all the information someone would need to answer your question
         </TipLabel>
         <RichTextEditor setText={setText}></RichTextEditor>
-        <BlueButton>Upload image</BlueButton>
+        <BlueButton
+          variant="contained"
+          style={{
+            height: 45,
+            marginLeft: 5,
+            borderRadius: 10,
+            marginTop: 10,
+            marginBottom: 20,
+            backgroundColor: "#378AD3",
+          }}
+        >
+          Upload image
+        </BlueButton>
         <StyledHeader2>Tags</StyledHeader2>
         <TipLabel>
           Add up to 5 tags to describe what your question is about
@@ -115,6 +128,14 @@ function AskPage() {
         <BlueButton
           onClick={async () => {
             await postQuestion(text, selectedTags, counter);
+          }}
+          variant="contained"
+          style={{
+            height: 45,
+            marginLeft: 5,
+            borderRadius: 10,
+            marginTop: 10,
+            backgroundColor: "#378AD3",
           }}
         >
           Post your question
