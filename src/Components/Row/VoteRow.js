@@ -1,6 +1,7 @@
 import StatsRow from "./StatsRow";
 import { VotesRow } from "./VoteRowStlyed";
 
+<<<<<<< HEAD
 function VoteRow() {
   return (
     <VotesRow>
@@ -24,6 +25,28 @@ function VoteRow() {
       </span>
     </VotesRow>
   );
+=======
+function VoteRow(props) {
+  if (props.value) {
+    const { body, votes, id } = props.value;
+    const contentState = convertFromRaw(body);
+    const editorState = EditorState.createWithContent(contentState);
+
+    return (
+      <VotesRow>
+        <StatsRow
+          data={props.value}
+          state={props.state}
+          setState={props.setState}
+        />
+        <span>
+          <Editor editorState={editorState} readOnly={true}></Editor>
+        </span>
+      </VotesRow>
+    );
+  }
+  return <div></div>;
+>>>>>>> f688640f64f9f656422ca343b965c2a6fa12b051
 }
 
 export default VoteRow;

@@ -1,0 +1,23 @@
+.other-profile-head {
+  margin-left: 10px;
+  padding-top: 70px;
+}
+.other-profile-name {
+  font-size: x-large;
+}
+
+.other-profile-stat {
+  color: rgb(193, 193, 194);
+  font-size: small;
+  margin-top: 10px;
+  margin-bottom: 60px;
+}
+
+.other-profile-questions {
+  color: #3ca4ff;
+  margin-left: 5px;
+  margin-bottom: 10px;
+}
+
+.questions-list {
+}

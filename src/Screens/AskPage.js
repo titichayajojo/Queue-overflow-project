@@ -1,12 +1,28 @@
 import styled from "styled-components";
+<<<<<<< HEAD
 import Header from "../Components/Header/Header";
 import { Link } from "react-router-dom";
+=======
+import RichTextEditor from "../Components/Input/RichTextEditor";
+import TagsInput from "../Components/Input/TagsInput";
+import { convertFromRaw, convertToRaw } from "draft-js";
+import { useParams } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import { Link, useHistory, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Button from "@mui/material/Button";
+>>>>>>> f688640f64f9f656422ca343b965c2a6fa12b051
 
 const Container = styled.div`
   padding: 30px 20px;
 `;
 
+<<<<<<< HEAD
 const BlueButton = styled.button`
+=======
+const BlueButton = styled(Button)`
+  font-size: 1rem;
+>>>>>>> f688640f64f9f656422ca343b965c2a6fa12b051
   background-color: #378ad3;
   color: #fff;
   border: 0;
@@ -57,7 +73,35 @@ const QuestionBodyText = styled.textarea`
   min-height: 200px;
   margin-bottom: 20px;
 `;
+<<<<<<< HEAD
 function AskPage() {
+=======
+
+async function postQuestion(body, tags, token, history) {
+  var title = document.getElementById("inTitle").value;
+  var headers = { Authorization: token };
+  await fetch("http://127.0.0.1:8000/api/questions", {
+    method: "POST",
+    mode: "cors",
+    headers: headers,
+    body: JSON.stringify({ title: title, body: body, tags: tags }),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((jsonResponse) => {
+      console.log(jsonResponse);
+      history.push("/HomePage");
+    });
+}
+
+function AskPage() {
+  const history = useHistory();
+  const counter = useSelector((state) => state.counter.token);
+  const [text, setText] = useState(null);
+  const [selectedTags, setSelectedTags] = useState(null);
+
+>>>>>>> f688640f64f9f656422ca343b965c2a6fa12b051
   return (
     <div>
       <Header />
@@ -75,17 +119,40 @@ function AskPage() {
         <TipLabel>
           Include all the information someone would need to answer your question
         </TipLabel>
+<<<<<<< HEAD
         <QuestionBodyText placeholder="Question"></QuestionBodyText>
         <BlueButton>Upload image</BlueButton>
+=======
+        <RichTextEditor setText={setText}></RichTextEditor>
+>>>>>>> f688640f64f9f656422ca343b965c2a6fa12b051
         <StyledHeader2>Tags</StyledHeader2>
         <TipLabel>
           Add up to 5 tags to describe what your question is about
         </TipLabel>
+<<<<<<< HEAD
         <QuestionTitleInput
           type="text"
           placeholder="e.g.(python html css)"
         ></QuestionTitleInput>
         <BlueButton>Post your question</BlueButton>
+=======
+        <TagsInput setSelectedTags={setSelectedTags}></TagsInput>
+        <BlueButton
+          onClick={async () => {
+            await postQuestion(text, selectedTags, counter, history);
+          }}
+          variant="contained"
+          style={{
+            height: 45,
+            marginLeft: 5,
+            borderRadius: 10,
+            marginTop: 10,
+            backgroundColor: "#378AD3",
+          }}
+        >
+          Post your question
+        </BlueButton>
+>>>>>>> f688640f64f9f656422ca343b965c2a6fa12b051
       </Container>
     </div>
   );

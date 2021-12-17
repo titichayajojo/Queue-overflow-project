@@ -1,0 +1,35 @@
+
+article {
+    max-width: 500px;
+  }
+  
+  article p {
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    margin-left: 10px;
+  }
+
+  .column{
+    display: flex;
+    flex-direction: column;
+}
+.row{
+    display:flex;
+    flex-direction: row;
+}
+
+.heading1{
+  margin-left: 5px;
+    font-size: 36px;
+
+}
+.heading2{
+    font-size:20px;
+}
+
+.tagName{
+  font-size:20px;
+  color: #39739D
+}

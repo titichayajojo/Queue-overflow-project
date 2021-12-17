@@ -65,6 +65,7 @@ export const Border = styled.div`
   width: 50vw;
 `;
 
+<<<<<<< HEAD
 function ViewQuestionPage() {
   let params = useParams();
   console.log(params.item)
@@ -86,6 +87,116 @@ function ViewQuestionPage() {
         <AnswerButtonRow>
           <BlueButton>Post&nbsp;Your&nbsp;Answer</BlueButton>
         </AnswerButtonRow>
+=======
+function ViewQuestionPage(props) {
+  console.log("ViewQuestion Called");
+  const [loading, setLoading] = useState(true);
+  const [newAnswer, setAnswer] = useState(false);
+  const [votes, setVotes] = useState(false);
+  let params = useParams();
+  let [data, setData] = useState(null);
+  let [updateData, setUpdatedData] = useState(null);
+  const [data2, setData2] = useState(null);
+
+  const finishLoading = async () => {
+    setLoading(false);
+  };
+  const fetchData = useCallback(async () => {
+    var headers = {};
+    if (!newAnswer) {
+      fetch("http://127.0.0.1:8000/api/question/" + params.item, {
+        method: "GET",
+        mode: "cors",
+        headers: headers,
+      })
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          }
+        })
+        .then((jsonResponse) => {
+          console.log(jsonResponse);
+          setData(jsonResponse);
+        })
+        .catch((error) => console.error(error, error.stack));
+
+      fetch("http://127.0.0.1:8000/api/question/" + params.item + "/", {
+        method: "PUT",
+        mode: "cors",
+        headers: headers,
+      })
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          }
+        })
+        .then((jsonResponse) => {
+          console.log(jsonResponse);
+          setUpdatedData(jsonResponse);
+        })
+        .catch((error) => console.error(error, error.stack));
+    }
+
+    fetch("http://127.0.0.1:8000/api/answer/" + params.item, {
+      method: "GET",
+      mode: "cors",
+      headers: headers,
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((jsonResponse) => {
+        setData2(jsonResponse);
+      })
+      .catch((error) => console.error(error, error.stack));
+  }, [newAnswer, votes]);
+
+  useEffect(async () => {
+    fetchData().then(() => {});
+  }, [fetchData]);
+
+  useEffect(() => {
+    if (data && updateData && data2) {
+      finishLoading();
+    }
+  }, [data, updateData, data2]);
+  console.log("data = ", data);
+  return (
+    <div>
+      <Loader
+        style={{
+          position: "absolute",
+          marginLeft: "45%",
+          marginTop: "10%",
+        }}
+        type="ThreeDots"
+        color="white"
+        height={150}
+        width={150}
+        visible={loading}
+      />
+
+      <BodyDiv style={{}}>
+        {data != null &&
+          updateData &&
+          data2 &&
+          data.map((element, index) => {
+            return (
+              <FetchRow
+                key={element.id}
+                value={element}
+                params={params.item}
+                data={data2}
+                state={newAnswer}
+                setState={setAnswer}
+                state2={votes}
+                setState2={setVotes}
+              />
+            );
+          })}
+>>>>>>> f688640f64f9f656422ca343b965c2a6fa12b051
       </BodyDiv>
     </div>
   );
