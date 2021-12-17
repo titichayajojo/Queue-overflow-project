@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 
 function vote(des, id, token, state, setState) {
-  console.log("vote = ", votes);
   var headers = { Authorization: token };
   fetch("http://127.0.0.1:8000/api/" + des + "/vote/" + id + "/", {
     method: "PUT",
