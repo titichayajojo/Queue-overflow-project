@@ -72,15 +72,6 @@ const TagPage = (props) => {
               borderRadius: 10,
             }}
           ></SearchInput>
-          {/* <ToggleButtonGroup
-            color="primary"
-            style={{ backgroundColor: "white", marginRight: 50 }}
-            exclusive
-          >
-            <ToggleButton value="web">Popular</ToggleButton>
-            <ToggleButton value="android">Name</ToggleButton>
-            <ToggleButton value="ios">New</ToggleButton>
-          </ToggleButtonGroup> */}
         </div>
         <Grid
           container
