@@ -152,15 +152,11 @@ function QuestionPage() {
           <div
             className={classes.heading1}
             style={{ marginTop: 40, marginLeft: 40, color: "#C1C1C2" }}
-          >
-            Home
-          </div>
+          ></div>
           <div
             className={classes.heading1}
             style={{ marginTop: 40, marginLeft: 40, color: "#C1C1C2" }}
-          >
-            PUBLIC
-          </div>
+          ></div>
           <div
             className={classes.row}
             style={{ marginTop: 40, alignItems: "center" }}
