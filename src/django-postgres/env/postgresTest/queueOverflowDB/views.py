@@ -125,8 +125,12 @@ def answerList(request):
             
         answerData = JSONParser().parse(request)
         answerData['writer'] = str(username)
+        questionId = answerData['questionId']
         answerSerializer = AnswerSerializer(data=answerData)
         if answerSerializer.is_valid():
+            question = Question.objects.filter(id=questionId)
+            currentAnswer = question.values('answers')[0]['answers']
+            question.update(answers=currentAnswer+1)
             answerSerializer.save()
             return JsonResponse(answerSerializer.data, status=status.HTTP_201_CREATED) 
         return JsonResponse(answerSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
