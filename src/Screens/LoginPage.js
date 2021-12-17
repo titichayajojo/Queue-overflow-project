@@ -58,6 +58,7 @@ function LoginPage() {
           alert("Login successful");
           history.push("/home");
           dispatch(counterActions.setToken(jsonResponse.token));
+          dispatch(counterActions.setUserName(jsonResponse.username));
         } else {
           setLoading(false);
           alert("please check your email and password and try again");

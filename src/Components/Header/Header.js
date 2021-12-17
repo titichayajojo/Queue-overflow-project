@@ -11,6 +11,7 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { purple } from "@mui/material/colors";
 import classes from "./Header.module.css";
+import { useSelector } from "react-redux";
 const BootstrapButton = styled(Button)({
   boxShadow: "none",
   textTransform: "none",
@@ -57,6 +58,8 @@ const ColorButton = styled(Button)(({ theme }) => ({
 function Header() {
   const history = useHistory();
   const [search, setSearch] = useState("");
+  const counter = useSelector((state) => state.counter.token);
+  const userName = useSelector((state) => state.counter.userName);
 
   const searchHandler = (text) => {
     history.push({
@@ -112,9 +115,12 @@ function Header() {
         </ColorButton>
       </div>
 
-      <ProfileLink to="/LoginPage" style={{ marginTop: 8 }}>
-        Login
-      </ProfileLink>
+      {counter == "" && (
+        <ProfileLink to="/LoginPage" style={{ marginTop: 8 }}>
+          Login
+        </ProfileLink>
+      )}
+      {counter != "" && <div style={{ marginTop: 10 }}>{userName}</div>}
     </StyledHeader>
   );
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faFrown } from "@fortawesome/free-solid-svg-icons";
 import UserQuestion from "../Container/UserQuestions";
@@ -7,12 +8,20 @@ import "./UserPage.css";
 
 const UserPage = (props) => {
   var data = props.data;
+  let pic =
+    require("../django-postgres/env/postgresTest/media/no_profile_pic.png").default;
+  if (data != null) {
+    if (data[0].url != null) {
+      pic = require("../django-postgres/env/postgresTest" +
+        data[0].url).default;
+    }
+  }
   return (
     <div className="profile-head">
       {data != null && (
         <div className="profile-info">
           <div className="profile-name">
-            {data != null && <FontAwesomeIcon icon={faUser} size="3x" />} &nbsp;
+            {data != null && <img src={pic} height={100} width={100} />} &nbsp;
             {data[0].first_name} &nbsp;
             {data[0].last_name}
           </div>

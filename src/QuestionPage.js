@@ -36,10 +36,10 @@ const BlueButton = styled(Button)`
   border-radius: 5px;
   padding: 12px 10px;
   text-decoration: none;
-  margin-top: 50px;
+  margin-top: 70px;
 `;
 
-const TabBars = [{ name: "Questions" }, { name: "Tags" }, { name: "Users" }];
+const TabBars = [{ name: "Questions" }, { name: "Tags" }, { name: "User" }];
 
 function QuestionPage() {
   const history = useHistory();
@@ -84,7 +84,7 @@ function QuestionPage() {
     switch (curButton) {
       case "Tags":
         return <TagPage tags={tags} />;
-      case "Users":
+      case "User":
         return <UserPage data={user} />;
       default:
         return <div />;
