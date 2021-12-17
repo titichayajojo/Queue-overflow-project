@@ -48,11 +48,12 @@ const AnswerInputRow = styled.div`
 `;
 
 const AnswerButtonRow = styled.div`
-  display: grid;
+  display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px;
   margin-right: 660px;
+  margin-left: 100px;
 `;
 
 function FetchRow(props) {
@@ -134,7 +135,7 @@ function FetchRow(props) {
         >
           Post&nbsp;Your&nbsp;Answer
         </BlueButton>
-        <div style={{ marginTop: 20 }}>
+        <div style={{ marginTop: 20, marginLeft: 70 }}>
           <ClipLoader color={"#0A95FF"} loading={loading} size={50} />
         </div>
       </AnswerButtonRow>
