@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Button from "@mui/material/Button";
 
 export const ViewQuestionHeaderRow = styled.div`
   display: flex;
@@ -13,7 +14,7 @@ export const StyledHeader = styled.div`
   color: hsl(210, 8%, 82.5%);
 `;
 
-export const BlueButton = styled.button`
+export const BlueButton = styled(Button)`
   background-color: #378ad3;
   color: #fff;
   border: 0;

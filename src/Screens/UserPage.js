@@ -1,6 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faFrown } from "@fortawesome/free-solid-svg-icons";
 import UserQuestion from "../Container/UserQuestions";
 import UserAnswer from "../Container/UserAnswer";
 import "./UserPage.css";
@@ -22,11 +22,20 @@ const UserPage = (props) => {
           <div className="profile-questions">
             Questions ({data[0].number_of_question_asked})
           </div>
-          <UserQuestion className="questions-list" data={data[0]} />
+          <UserQuestion data={data[0]} />
           <div className="profile-questions">
             Answers ({data[0].number_of_answered})
           </div>
-          <UserAnswer className="questions-list" data={data[0]} />
+          <UserAnswer data={data[0]} />
+        </div>
+      )}
+      {data == null && (
+        <div>
+          <div className="no-user-icon">
+            {" "}
+            <FontAwesomeIcon icon={faFrown} size="5x" color="#C1C1C2" />
+          </div>
+          <div className="no-user">You are not logged in</div>
         </div>
       )}
     </div>

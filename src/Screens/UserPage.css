@@ -1,17 +1,14 @@
 .profile-head {
-  margin-left: 10px;
   margin-top: 100px;
 }
 .profile-name {
   font-size: x-large;
-  margin: 30px 30px 0px;
 }
 
 .profile-stat {
   color: rgb(193, 193, 194);
   font-size: small;
   margin-top: 10px;
-  margin-left: 30px;
   margin-bottom: 60px;
 }
 
@@ -21,5 +18,19 @@
   margin-bottom: 10px;
 }
 
-.questions-list {
+.no-user {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: x-large;
+  color: "#C1C1C2";
+}
+
+.no-user-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 200px;
 }

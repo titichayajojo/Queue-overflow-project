@@ -41,9 +41,11 @@ function OtherUserPage(props) {
       <div className="other-profile-head">
         <Loader
           style={{
-            position: "absolute",
-            marginLeft: "35%",
-            marginTop: "10%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+            minHeight: "50vh",
           }}
           type="ThreeDots"
           color="white"
