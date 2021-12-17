@@ -1,6 +1,6 @@
 import { createSlice, configureStore } from "@reduxjs/toolkit";
 
-const initialState = { token: "" };
+const initialState = { token: "", userName: "" };
 
 const counterSlice = createSlice({
   name: "counter",
@@ -8,6 +8,9 @@ const counterSlice = createSlice({
   reducers: {
     setToken(state, action) {
       state.token = action.payload;
+    },
+    setUserName(state, action) {
+      state.userName = action.payload;
     },
   },
 });

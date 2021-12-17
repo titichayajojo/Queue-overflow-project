@@ -2,10 +2,12 @@
   margin-top: 100px;
 }
 .profile-name {
+  margin-left: 10px;
   font-size: x-large;
 }
 
 .profile-stat {
+  margin-left: 10px;
   color: rgb(193, 193, 194);
   font-size: small;
   margin-top: 10px;

@@ -35,6 +35,14 @@ function OtherUserPage(props) {
         setLoading(false);
       });
   }, []);
+  let pic =
+    require("../django-postgres/env/postgresTest/media/no_profile_pic.png").default;
+  if (data) {
+    if (data[0].url != null) {
+      pic = require("../django-postgres/env/postgresTest" +
+        data[0].url).default;
+    }
+  }
 
   return (
     <div>
@@ -56,7 +64,7 @@ function OtherUserPage(props) {
         {data != null && (
           <div className="other-profile-info">
             <div className="other-profile-name">
-              {data != null && <FontAwesomeIcon icon={faUser} size="3x" />}{" "}
+              {data != null && <img src={pic} height={100} width={100} />}{" "}
               &nbsp;
               {data[0].first_name} &nbsp;
               {data[0].last_name}

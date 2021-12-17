@@ -9,6 +9,7 @@ import AnswersRow from "../Row/AnswersRow";
 import { useEffect, useState } from "react";
 import RichTextEditor from "../Input/RichTextEditor";
 import { Link, useHistory, useLocation } from "react-router-dom";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const TotalAnswers = styled.div`
   display: grid;
@@ -58,6 +59,7 @@ function FetchRow(props) {
   const history = useHistory();
   const counter = useSelector((state) => state.counter.token);
   const [text, setText] = useState(null);
+  const [loading, setLoading] = useState(false);
   const params = props.params;
 
   function postAnswer(id, body, setState, state, token) {
@@ -73,6 +75,7 @@ function FetchRow(props) {
       })
         .then((res) => {
           setState(!state);
+          setLoading(false);
           return res.json();
         })
         .then((jsonResponse) => {
@@ -106,6 +109,7 @@ function FetchRow(props) {
       <AnswerButtonRow>
         <BlueButton
           onClick={async () => {
+            setLoading(true);
             postAnswer(params, text, props.setState, props.state, counter);
           }}
           variant="contained"
@@ -119,6 +123,9 @@ function FetchRow(props) {
         >
           Post&nbsp;Your&nbsp;Answer
         </BlueButton>
+        <div style={{ marginTop: 20 }}>
+          <ClipLoader color={"#0A95FF"} loading={loading} size={50} />
+        </div>
       </AnswerButtonRow>
     </div>
   );

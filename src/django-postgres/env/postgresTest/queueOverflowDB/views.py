@@ -328,8 +328,8 @@ def upload(request):
 
         upload = request.FILES['upload']
         fss = FileSystemStorage(location="media")
-        fileName = str(username)+"/"+datetime.now().strftime("%m-%d-%Y, %H:%M:%S")+".jpeg"
-        file = fss.save(str(username) + "/" + upload.name, upload)
+        fileName = str(username)+".jpeg"
+        file = fss.save(str(username) + "/" + fileName, upload)
         file_url = fss.url(file)
 
         profileImage = ProfileImage.objects.filter(username=str(username))
