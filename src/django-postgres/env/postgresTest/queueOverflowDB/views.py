@@ -137,7 +137,7 @@ def answerDetail(request, questionId):
     # get answer by questionId
     if request.method == 'GET':
         try:
-            answers = Answer.objects.filter(questionId=questionId)
+            answers = Answer.objects.filter(questionId=questionId).order_by('createdAt')
             answerSerializer = AnswerSerializer(answers, many=True) 
             return JsonResponse(answerSerializer.data, safe=False)
         except:
