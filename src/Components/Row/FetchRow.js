@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 import { BlueButton } from "../Header/ViewQuestionHeaderStyle";
 import ViewQuestionHeader from "../Header/ViewQuestionHeader";
 import VoteRow from "../Row/VoteRow";
+import AnswersRow from "../Row/AnswersRow";
 import TagsRow from "../Row/TagsRow";
 import ProfileRow from "../Row/ProfileRow";
-import AnswersRow from "../Row/AnswersRow";
 import { useEffect, useState } from "react";
 import RichTextEditor from "../Input/RichTextEditor";
 import { Link, useHistory, useLocation } from "react-router-dom";
@@ -86,7 +86,11 @@ function FetchRow(props) {
   return (
     <div>
       <ViewQuestionHeader value={props.value} />
-      <VoteRow value={props.value} />
+      <VoteRow
+        value={props.value}
+        state={props.state2}
+        setState={props.setState2}
+      />
       <div
         style={{
           display: "flex",
@@ -99,7 +103,14 @@ function FetchRow(props) {
       <ProfileRow value={props.value} />
       <TotalAnswers>{Object.keys(props.data).length} Answers</TotalAnswers>
       {props.data.map((element, index) => {
-        return <AnswersRow key={element.id} value={element} />;
+        return (
+          <AnswersRow
+            key={element.id}
+            value={element}
+            state={props.state2}
+            setState={props.setState2}
+          />
+        );
       })}
 
       <YourAnswer>Your Answer</YourAnswer>

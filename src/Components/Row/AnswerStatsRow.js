@@ -4,7 +4,7 @@ import { faSortDown } from "@fortawesome/free-solid-svg-icons";
 import { Votes, ArrowsRow } from "./StatsRowStyled";
 import { useSelector } from "react-redux";
 
-async function vote(des, id, token) {
+async function vote(des, id, token, state, setState) {
   var votes = Number(document.getElementById("voteId").innerHTML);
   console.log("vote = ", votes);
   var headers = { Authorization: token };
@@ -18,15 +18,14 @@ async function vote(des, id, token) {
     })
     .then((jsonResponse) => {
       if (jsonResponse.error == null) {
-        votes += 1;
-        document.getElementById("voteId").innerHTML = votes;
+        setState(!state);
         console.log("answerVoted");
       }
     })
     .catch((error) => console.error(error, error.stack));
 }
 
-async function devote(des, id, token) {
+async function devote(des, id, token, state, setState) {
   var votes = Number(document.getElementById("voteId").innerHTML);
   var headers = { Authorization: token };
   await fetch("http://127.0.0.1:8000/api/" + des + "/devote/" + id + "/", {
@@ -39,8 +38,8 @@ async function devote(des, id, token) {
     })
     .then((jsonResponse) => {
       if (jsonResponse.error == null) {
-        votes -= 1;
-        document.getElementById("voteId").innerHTML = votes;
+        setState(!state);
+        console.log("answerDeVoted");
       }
     })
     .catch((error) => console.error(error, error.stack));
@@ -61,7 +60,7 @@ function AnswerStatsRow(props) {
         size="4x"
         color="grey"
         onClick={async () => {
-          await vote(des, key, counter);
+          await vote(des, key, counter, props.state, props.setState);
         }}
       />
       <Votes id="voteId">{votes}</Votes>
@@ -70,7 +69,7 @@ function AnswerStatsRow(props) {
         size="4x"
         color="grey"
         onClick={async () => {
-          await devote(des, key, counter);
+          await devote(des, key, counter, props.state, props.setState);
         }}
       />
     </ArrowsRow>

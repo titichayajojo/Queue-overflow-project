@@ -17,8 +17,10 @@ export const Border = styled.div`
 `;
 
 function ViewQuestionPage(props) {
+  console.log("ViewQuestion Called");
   const [loading, setLoading] = useState(true);
   const [newAnswer, setAnswer] = useState(false);
+  const [votes, setVotes] = useState(false);
   let params = useParams();
   let [data, setData] = useState(null);
   let [updateData, setUpdatedData] = useState(null);
@@ -77,7 +79,7 @@ function ViewQuestionPage(props) {
         setData2(jsonResponse);
       })
       .catch((error) => console.error(error, error.stack));
-  }, [newAnswer]);
+  }, [newAnswer, votes]);
 
   useEffect(async () => {
     fetchData().then(() => {});
@@ -88,6 +90,7 @@ function ViewQuestionPage(props) {
       finishLoading();
     }
   }, [data, updateData, data2]);
+  console.log("data = ", data);
   return (
     <div>
       <Loader
@@ -116,6 +119,8 @@ function ViewQuestionPage(props) {
                 data={data2}
                 state={newAnswer}
                 setState={setAnswer}
+                state2={votes}
+                setState2={setVotes}
               />
             );
           })}
