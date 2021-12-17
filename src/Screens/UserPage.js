@@ -10,7 +10,7 @@ const UserPage = (props) => {
   var data = props.data;
   let pic =
     require("../django-postgres/env/postgresTest/media/no_profile_pic.png").default;
-  if (data != null) {
+  if (data) {
     if (data[0].url != null) {
       pic = require("../django-postgres/env/postgresTest" +
         data[0].url).default;
