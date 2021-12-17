@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import { useSelector } from "react-redux";
 import { BlueButton } from "../Header/ViewQuestionHeaderStyle";
 import ViewQuestionHeader from "../Header/ViewQuestionHeader";
 import VoteRow from "../Row/VoteRow";
@@ -8,6 +8,7 @@ import ProfileRow from "../Row/ProfileRow";
 import AnswersRow from "../Row/AnswersRow";
 import { useEffect, useState } from "react";
 import RichTextEditor from "../Input/RichTextEditor";
+import { Link, useHistory, useLocation } from "react-router-dom";
 
 const TotalAnswers = styled.div`
   display: grid;
@@ -53,27 +54,32 @@ const AnswerButtonRow = styled.div`
   margin-right: 660px;
 `;
 
-function postAnswer(id, body, setState, state) {
-  var headers = { Authorization: "4ac201a63372eb50e301263ceeaacbb83c762f78" };
-  fetch("http://127.0.0.1:8000/api/answers", {
-    method: "POST",
-    mode: "cors",
-    headers: headers,
-    body: JSON.stringify({ questionId: id, body: body }),
-  })
-    .then((res) => {
-      setState(!state);
-      return res.json();
-    })
-    .then((jsonResponse) => {
-      console.log(jsonResponse);
-    });
-}
-
 function FetchRow(props) {
+  const history = useHistory();
+  const counter = useSelector((state) => state.counter.token);
   const [text, setText] = useState(null);
   const params = props.params;
 
+  function postAnswer(id, body, setState, state, token) {
+    if (token == "") {
+      history.push("/LoginPage");
+    } else {
+      var headers = { Authorization: token };
+      fetch("http://127.0.0.1:8000/api/answers", {
+        method: "POST",
+        mode: "cors",
+        headers: headers,
+        body: JSON.stringify({ questionId: id, body: body }),
+      })
+        .then((res) => {
+          setState(!state);
+          return res.json();
+        })
+        .then((jsonResponse) => {
+          console.log(jsonResponse);
+        });
+    }
+  }
   return (
     <div>
       <ViewQuestionHeader value={props.value} />
@@ -100,7 +106,15 @@ function FetchRow(props) {
       <AnswerButtonRow>
         <BlueButton
           onClick={async () => {
-            postAnswer(params, text, props.setState, props.state);
+            postAnswer(params, text, props.setState, props.state, counter);
+          }}
+          variant="contained"
+          style={{
+            height: 45,
+            marginLeft: 5,
+            borderRadius: 10,
+            marginTop: 30,
+            backgroundColor: "#378AD3",
           }}
         >
           Post&nbsp;Your&nbsp;Answer

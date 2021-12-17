@@ -13,14 +13,14 @@ function ProfileRow(props) {
   if (props.value) {
     let createdAt = new Date(props.value.createdAt);
     const writer = props.value.writer;
-    const date = `${createdAt.getMonth()} '${createdAt.getDate()} at ${createdAt.getHours()}:${createdAt.getMinutes()}`
+    const date = `${createdAt.getMonth()} '${createdAt.getDate()} at ${createdAt.getHours()}:${createdAt.getMinutes()}`;
     return (
       <Border>
         <WriterRow>
           <Writer>
             <AskedDate>Asked Date {date}</AskedDate>
             <FontAwesomeIcon icon={faPaw} size="2x" />
-            <WriterName>{writer}</WriterName>
+            <WriterName to={"/OtherUserPage/" + writer}>{writer}</WriterName>
           </Writer>
         </WriterRow>
       </Border>

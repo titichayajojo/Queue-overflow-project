@@ -1,10 +1,13 @@
 import styled from "styled-components";
 import TagPage from "../src/Container/TagPage";
-import QuestionRow from "./QuestionRow";
+import UserPage from "./Screens/UserPage";
+import QuestionRow from "./Components/Row/QuestionRow";
+import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 import TabBar from "../src/Components/Button/TabBar";
 import classes from "./QuestionPage.module.css";
 import Loader from "react-loader-spinner";
+import { useSelector } from "react-redux";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGripLinesVertical } from "@fortawesome/free-solid-svg-icons";
@@ -26,7 +29,7 @@ const HeaderRow = styled.div`
   padding: 30px 20px;
 `;
 
-const BlueButton = styled(Link)`
+const BlueButton = styled(Button)`
   background-color: #378ad3;
   color: #fff;
   border: 0;
@@ -47,12 +50,42 @@ function QuestionPage() {
   const curButton = queryParams.get("choice");
   const search = queryParams.get("input");
   const [tags, setTags] = useState(null);
+  const counter = useSelector((state) => state.counter.token);
+
+  let [user, setUser] = useState(null);
+  const askQuestion = () => {
+    if (counter == "") {
+      history.push("/LoginPage");
+    } else {
+      history.push("/AskPage");
+    }
+  };
+  useEffect(() => {
+    var headers = { Authorization: counter };
+    fetch("http://127.0.0.1:8000/api/user/info", {
+      method: "GET",
+      mode: "cors",
+      headers: headers,
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((jsonResponse) => {
+        console.log(jsonResponse);
+        setUser(jsonResponse);
+
+        setLoading(false);
+      });
+  }, []);
 
   const SubPage = () => {
-    console.log("search", data);
     switch (curButton) {
       case "Tags":
         return <TagPage tags={tags} />;
+      case "Users":
+        return <UserPage data={user} />;
       default:
         return <div />;
     }
@@ -118,13 +151,13 @@ function QuestionPage() {
         <div className={classes.menubar}>
           <div
             className={classes.heading1}
-            style={{ marginTop: 40, marginLeft: 40 }}
+            style={{ marginTop: 40, marginLeft: 40, color: "#C1C1C2" }}
           >
             Home
           </div>
           <div
             className={classes.heading1}
-            style={{ marginTop: 40, marginLeft: 40 }}
+            style={{ marginTop: 40, marginLeft: 40, color: "#C1C1C2" }}
           >
             PUBLIC
           </div>
@@ -139,7 +172,7 @@ function QuestionPage() {
               style={{ margin: 10 }}
             />
             <div className={classes.heading1} style={{}}>
-              Stack Overflow
+              Queue Overflow
             </div>
           </div>
 
@@ -165,7 +198,19 @@ function QuestionPage() {
           {data != null && curButton === "Questions" && (
             <HeaderRow>
               <StyledHeader>Top Questions</StyledHeader>
-              <BlueButton to={"/AskPage"}>Ask&nbsp;Question</BlueButton>
+              <BlueButton
+                onClick={askQuestion}
+                variant="contained"
+                style={{
+                  height: 45,
+                  marginLeft: 5,
+                  borderRadius: 10,
+                  marginTop: 30,
+                  backgroundColor: "#378AD3",
+                }}
+              >
+                Ask&nbsp;Question
+              </BlueButton>
             </HeaderRow>
           )}
           <div style={{}}>

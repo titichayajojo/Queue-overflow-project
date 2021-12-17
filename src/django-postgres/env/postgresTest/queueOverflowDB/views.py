@@ -327,9 +327,9 @@ def upload(request):
             return JsonResponse({"error": "please spcify token"}, status=status.HTTP_400_BAD_REQUEST)
 
         upload = request.FILES['upload']
-        fss = FileSystemStorage()
+        fss = FileSystemStorage(location="media")
         fileName = str(username)+"/"+datetime.now().strftime("%m-%d-%Y, %H:%M:%S")+".jpeg"
-        file = fss.save(fileName, upload)
+        file = fss.save(str(username) + "/" + upload.name, upload)
         file_url = fss.url(file)
 
         profileImage = ProfileImage.objects.filter(username=str(username))

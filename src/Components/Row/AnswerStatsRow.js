@@ -20,7 +20,7 @@ async function vote(des, id, token) {
       if (jsonResponse.error == null) {
         votes += 1;
         document.getElementById("voteId").innerHTML = votes;
-        console.log("vote!");
+        console.log("answerVoted");
       }
     })
     .catch((error) => console.error(error, error.stack));
@@ -46,7 +46,7 @@ async function devote(des, id, token) {
     .catch((error) => console.error(error, error.stack));
 }
 
-function StatsRow(props) {
+function AnswerStatsRow(props) {
   const counter = useSelector((state) => state.counter.token);
   const votes = props.data.votes;
   var key = props.data.id;
@@ -77,4 +77,4 @@ function StatsRow(props) {
   );
 }
 
-export default StatsRow;
+export default AnswerStatsRow;

@@ -23,7 +23,8 @@ const TabBar = (props) => {
       {/* <div style={{ color: "balck" }}>Questions</div> */}
       <div
         style={{
-          color: "#C1C1C2",
+          color: curButton === props.title ? "white" : "#C1C1C2",
+
           padding: 10,
           paddingLeft: 50,
           fontSize: 20,

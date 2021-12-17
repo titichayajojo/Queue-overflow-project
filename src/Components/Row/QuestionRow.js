@@ -53,7 +53,7 @@ const WhoAndWhen = styled.div`
   padding: 10px 0;
 `;
 
-const UserLink = styled.a`
+const UserLink = styled(Link)`
   color: #3ca4ff;
 `;
 
@@ -78,7 +78,8 @@ function QuestionRow(props) {
       <QuestionTitleArea>
         <QuestionLink to={"/ViewQuestionPage/" + id}>{title}</QuestionLink>
         <WhoAndWhen>
-          {nDaysAgo} <UserLink>{writer}</UserLink>
+          {nDaysAgo}{" "}
+          <UserLink to={"/OtherUserPage/" + writer}>{writer}</UserLink>
         </WhoAndWhen>
         {tags.map((tag, index) => {
           return <Tag key={index}>{tag}</Tag>;

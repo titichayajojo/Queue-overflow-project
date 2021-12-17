@@ -18,6 +18,7 @@ import SignUp from "../src/Screens/SignUp";
 import ViewQuestionPage from "./Screens/ViewQuestionPage";
 
 import AskPage from "./Screens/AskPage";
+import OtherUserPage from "./Screens/OtherUserPage";
 
 function App() {
   const routes = (
@@ -28,6 +29,8 @@ function App() {
       <Route path="/Tags" component={TagsPage} />
       <Route path="/AskPage" component={AskPage} />
       <Route path="/ViewQuestionPage/:item" component={ViewQuestionPage} />
+      <Route path="/OtherUserPage/:item" component={OtherUserPage} />
+      <Route path="/User" component={UserPage} />
       <Route path="/" component={HomePage} />
 
       {/* <Redirect to="/" /> */}

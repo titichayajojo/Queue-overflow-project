@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const WriterRow = styled.div`
   display: grid;
@@ -28,7 +29,7 @@ export const AskedDate = styled.div`
   font-size: 0.8rem;
 `;
 
-export const WriterName = styled.a`
+export const WriterName = styled(Link)`
   padding-left: 10px;
   font-size: 0.8rem;
   color: hsl(206deg 100% 60%);
